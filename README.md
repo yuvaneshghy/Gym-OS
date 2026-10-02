@@ -59,8 +59,13 @@ Ensure you have Flutter (v3.47+) installed.
 
 1. Clone the repository: `git clone https://github.com/North-Abyss/GYM-CT.git`
 2. Install dependencies: `flutter pub get`
-3. Launch PocketBase locally.
+3. Launch PocketBase locally (or just use `./run.sh --web`).
 4. Run the app: `flutter run`
+
+### 🔑 Default Test Accounts
+The local PocketBase database is automatically seeded with two test accounts:
+- **Owner**: `owner@gym.local` / `password123`
+- **Member**: `member@gym.local` / `password123`
 
 ## 🗺️ Roadmap
 Check out the phased delivery plan in [docs/meta/ROADMAP.md](docs/meta/ROADMAP.md).
