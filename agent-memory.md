@@ -21,7 +21,17 @@
 | **Hosting**      | Docker containers + Caddy reverse proxy on a VPS/OCI VM      |
 | **CI/CD**        | GitHub Actions, build matrix per client flavor               |
 | **Repo Path**    | `/mnt/sda5/Projects/GYM CT`                                  |
-| **GitHub Repo**  | `<fill in>`                                                  |
+| **GitHub Repo**  | `https://github.com/North-Abyss/GYM-CT`                      |
+
+---
+
+## 📚 Documentation Hub
+
+- **[docs/README.md](file:///mnt/sda5/Projects/GYM CT/docs/README.md)**: Main index.
+- **[EXPLANATION.md](file:///mnt/sda5/Projects/GYM CT/docs/architecture/EXPLANATION.md)**: Read this to understand the core architecture (Q&A and Mermaid diagram).
+- **[ROADMAP.md](file:///mnt/sda5/Projects/GYM CT/docs/meta/ROADMAP.md)**: Keep this updated as phases are completed.
+- **[CHANGELOG.md](file:///mnt/sda5/Projects/GYM CT/docs/meta/CHANGELOG.md)**: Log major releases and features here.
+- **[feature_matrix.md](file:///mnt/sda5/Projects/GYM CT/docs/requirements/feature_matrix.md)**: Check this to see which role gets which feature.
 
 ---
 

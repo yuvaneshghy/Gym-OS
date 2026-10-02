@@ -3,6 +3,7 @@
 # Git Commit & Sync Script - /git-sync.sh
 # Syncs local repository with remote and optionally triggers Cloud CI/CD
 # Usage: ./git-sync.sh [commit_message] [release_tag] [deploy_web_y_n]
+#        ./git-sync.sh --sync [commit_message]   ← git only, no actions
 
 set -e
 
@@ -13,7 +14,16 @@ YELLOW='\033[1;33m'
 RED='\033[0;31m'
 NC='\033[0m' # No Color
 
-echo -e "${BLUE}Starting Abyss Chat git sync...${NC}"
+# ==========================================
+# --sync flag: git-only mode (no CI/CD prompts)
+# ==========================================
+SYNC_ONLY=false
+if [[ "$1" == "--sync" ]]; then
+    SYNC_ONLY=true
+    shift  # Remove --sync so $1 becomes the commit message
+fi
+
+echo -e "${BLUE}Starting GymKit git sync...${NC}"
 
 # Stage all changes
 echo -e "${BLUE}Staging changes...${NC}"
@@ -47,6 +57,12 @@ git push origin "$(git rev-parse --abbrev-ref HEAD)"
 
 echo -e "${GREEN}Git sync completed successfully!${NC}"
 echo ""
+
+# If --sync was passed, stop here. No CI/CD prompts.
+if [[ "$SYNC_ONLY" == true ]]; then
+    echo -e "${BLUE}--sync mode: skipping release and deploy prompts. Have a great day!${NC}"
+    exit 0
+fi
 
 # ==========================================
 # 🚀 CLOUD PIPELINE TRIGGER
@@ -135,4 +151,3 @@ else
 fi
 
 echo -e "${BLUE}Have a great day!${NC}"
-
