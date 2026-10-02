@@ -1,23 +1,69 @@
-# GymKit (White-label Gym Management)
+# GymKit (v0.1.0)
 
-GymKit is a fast, compact, white-label Gym management product (member app + owner dashboard) built on a single Flutter codebase. It is designed to be sold to gym owners as a one-time white-label template or as a monthly managed service.
+A fast, compact, white-label Gym management product (member app + owner dashboard) built on a single Flutter codebase.
 
-## Tech Stack
-* **Client:** Flutter (Dart), Riverpod (State Management), go_router (Routing)
-* **Backend:** PocketBase (One instance per client/tenant for strict data isolation)
-* **Hosting:** Docker containers + Caddy reverse proxy
+> [!CAUTION]
+> **Proprietary Software**
+> This is a private, closed-source commercial product. Unauthorized copying, modification, or distribution is strictly prohibited.
 
-## Architecture Highlights
-* **Config over code:** All client-specific branding (colors, logos, fonts) and feature toggles are fetched dynamically. No per-client forks are required.
-* **Global Theme System:** UI relies entirely on a centralized theme and token system to allow instant white-labeling.
-* **Feature-first layout:** Code is organized by feature (`auth`, `members`, `payments`, etc.), containing `domain`, `data`, and `presentation` layers.
+## 📱 Features
 
-## Getting Started
+### 🏢 Owner / Admin
+- **Financial Dashboard:** Real-time revenue tracking, pending dues, and payment history.
+- **Member Management:** View all members, membership status, attendance, and contact info.
+- **Plan Control:** Create, edit, and disable membership plans, trial passes, and drop-in rates.
+- **Access Control:** Assign roles (Manager, Receptionist, Trainer) and manage permissions.
+- **White-label Config:** Configure app branding (colors, logos) and toggle feature flags dynamically.
 
-1. Ensure you have Flutter installed (`flutter doctor`).
-2. Run `flutter pub get` to install dependencies.
-3. Run the app: `flutter run`
+### 🏋️ Customer / Member
+- **Digital Access:** Quick QR code generation for turnstile/desk check-in.
+- **Membership Management:** View plan details, renew via in-app payments, and receive expiry reminders.
+- **Fitness Tracking:** View assigned workout plans, log daily workouts, and track progress.
+- **Classes & Bookings:** View the gym timetable and book slots for group classes.
 
-## Documentation
-* See `agent-memory.md` for architecture decisions, roadmap, and project state.
-* See `docs/gym_app_requirements.md` for user personas and feature requirements.
+### 👥 Groups / Staff
+- **Receptionist:** Fast QR check-in, immediate alerts for pending dues, and POS cash/card processing.
+- **Trainer:** View assigned members, assign workout plans, track progress, and view class schedules.
+- **Manager:** Handle day-to-day operations, staff shifts, and override system locks if necessary.
+
+## 🏗️ Architecture
+
+GymKit follows a clean **Feature-First Architecture** combined with a strict **Multi-Tenant** backend design (one PocketBase instance per client).
+
+> [!TIP]
+> **Deep Dives:**
+> - Check out [docs/README.md](docs/README.md) for our beautifully organized documentation hub.
+> - Check out [EXPLANATION.md](docs/architecture/EXPLANATION.md) for a comprehensive Q&A and architecture diagram.
+> - Check out [agent-memory.md](agent-memory.md) for a full breakdown of the directory structure and project session logs.
+
+### Tech Stack
+| Layer | Technology | Purpose | Documentation |
+|-------|------------|---------|---------------|
+| **Client** | [Flutter (Dart)](https://flutter.dev/) | Cross-platform UI framework | [Docs](https://docs.flutter.dev/) |
+| **State** | Riverpod (`flutter_riverpod`) | Reactive state management | [Pub](https://pub.dev/packages/flutter_riverpod) |
+| **Routing** | `go_router` | Declarative routing | [Pub](https://pub.dev/packages/go_router) |
+| **Backend** | [PocketBase](https://pocketbase.io/) | Multi-tenant auth, DB, and API rules | [Docs](https://pocketbase.io/docs/) |
+| **Hosting** | Docker + Caddy | Containerized deployments and reverse proxy | |
+
+### Key Components
+
+- **`lib/core/`**: Centralized theme system, shared widgets, and constants.
+- **`lib/features/`**: Business logic grouped by domain (`auth`, `members`, `payments`, etc.).
+- **`lib/data/`**: PocketBase client and offline caching.
+- **`lib/app/`**: High-level app initialization, router, and responsive layout wrappers.
+- **`pb/`**: Shared PocketBase migrations and hooks.
+
+## 🚀 Getting Started
+
+Ensure you have Flutter (v3.47+) installed.
+
+1. Clone the repository: `git clone https://github.com/North-Abyss/GYM-CT.git`
+2. Install dependencies: `flutter pub get`
+3. Launch PocketBase locally.
+4. Run the app: `flutter run`
+
+## 🗺️ Roadmap
+Check out the phased delivery plan in [docs/meta/ROADMAP.md](docs/meta/ROADMAP.md).
+
+## 🔗 Repository
+[North-Abyss/GYM-CT](https://github.com/North-Abyss/GYM-CT) (Private)
