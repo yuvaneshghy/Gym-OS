@@ -8,11 +8,6 @@ class TenantConfig {
     this.fontFamily = '',
   });
 
-  final Color seedColor;
-  final double cornerRadius;
-  final String inputStyle;
-  final String fontFamily;
-
   factory TenantConfig.fromJson(Map<String, dynamic> json) {
     Color parseColor(String hex) {
       if (hex.isEmpty) return Colors.blue;
@@ -28,6 +23,11 @@ class TenantConfig {
       fontFamily: json['font_family'] as String? ?? '',
     );
   }
+
+  final Color seedColor;
+  final double cornerRadius;
+  final String inputStyle;
+  final String fontFamily;
 
   Map<String, dynamic> toJson() => {
         'seed_color': '#${(seedColor.toARGB32() & 0xFFFFFF).toRadixString(16).padLeft(6, '0')}',
