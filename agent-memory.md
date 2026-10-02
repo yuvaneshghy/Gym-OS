@@ -27,11 +27,11 @@
 
 ## 📚 Documentation Hub
 
-- **[docs/README.md](file:///mnt/sda5/Projects/GYM CT/docs/README.md)**: Main index.
-- **[EXPLANATION.md](file:///mnt/sda5/Projects/GYM CT/docs/architecture/EXPLANATION.md)**: Read this to understand the core architecture (Q&A and Mermaid diagram).
-- **[ROADMAP.md](file:///mnt/sda5/Projects/GYM CT/docs/meta/ROADMAP.md)**: Keep this updated as phases are completed.
-- **[CHANGELOG.md](file:///mnt/sda5/Projects/GYM CT/docs/meta/CHANGELOG.md)**: Log major releases and features here.
-- **[feature_matrix.md](file:///mnt/sda5/Projects/GYM CT/docs/requirements/feature_matrix.md)**: Check this to see which role gets which feature.
+- **[docs/README.md](docs/README.md)**: Main index.
+- **[EXPLANATION.md](docs/architecture/EXPLANATION.md)**: Read this to understand the core architecture (Q&A and Mermaid diagram).
+- **[ROADMAP.md](docs/meta/ROADMAP.md)**: Keep this updated as phases are completed.
+- **[CHANGELOG.md](docs/meta/CHANGELOG.md)**: Log major releases and features here.
+- **[feature_matrix.md](docs/requirements/feature_matrix.md)**: Check this to see which role gets which feature.
 
 ---
 

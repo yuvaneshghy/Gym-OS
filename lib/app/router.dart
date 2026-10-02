@@ -26,16 +26,25 @@ final routerProvider = Provider<GoRouter>((ref) {
       if (isLoggingIn) {
         // If logged in, check role for home page routing
         final role = ref.read(authRepositoryProvider).currentRole;
-        if (role == 'MEMBER') {
+        if (role == 'member') {
           return '/member';
         }
-        return '/dashboard'; // Admin and Staff go to dashboard
+        if (role == 'owner' || role == 'manager' || role == 'receptionist' || role == 'trainer') {
+          return '/dashboard'; // Admin and Staff go to dashboard
+        }
+        return null;
       }
 
       // Root path redirect
       if (state.uri.path == '/') {
         final role = ref.read(authRepositoryProvider).currentRole;
-        return role == 'MEMBER' ? '/member' : '/dashboard';
+        if (role == 'member') {
+          return '/member';
+        }
+        if (role == 'owner' || role == 'manager' || role == 'receptionist' || role == 'trainer') {
+          return '/dashboard'; 
+        }
+        return '/login';
       }
 
       return null;
