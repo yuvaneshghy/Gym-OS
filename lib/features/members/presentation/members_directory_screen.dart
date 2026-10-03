@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../data/members_repository.dart';
+import 'add_member_dialog.dart';
 
 class MembersDirectoryScreen extends ConsumerWidget {
   const MembersDirectoryScreen({super.key});
@@ -73,8 +74,9 @@ class MembersDirectoryScreen extends ConsumerWidget {
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Member creation flow coming soon!')),
+          showDialog<void>(
+            context: context,
+            builder: (_) => const AddMemberDialog(),
           );
         },
         icon: const Icon(Icons.person_add),

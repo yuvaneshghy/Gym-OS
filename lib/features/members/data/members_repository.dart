@@ -24,4 +24,28 @@ class MembersRepository {
     );
     return res.items.map(Member.fromRecord).toList();
   }
+
+  Future<void> createMember({
+    required String name,
+    required String phone,
+    required String email,
+    required String password,
+  }) async {
+    // 1. Create auth user
+    final userRecord = await _pb.collection('users').create(body: {
+      'email': email,
+      'password': password,
+      'passwordConfirm': password,
+      'name': name,
+      'role': 'member',
+    });
+
+    // 2. Create linked member profile
+    await _pb.collection('members').create(body: {
+      'user': userRecord.id,
+      'name': name,
+      'phone': phone,
+      'joined_on': DateTime.now().toUtc().toIso8601String().replaceFirst('T', ' '),
+    });
+  }
 }

@@ -122,13 +122,6 @@ class AppLayout extends ConsumerWidget {
               onTap: () => context.go('/members'),
             ),
           ],
-          const SizedBox(width: 16),
-          _DockItem(
-            icon: Icons.settings,
-            label: 'Settings',
-            isSelected: currentPath == '/settings',
-            onTap: () => context.go('/settings'),
-          ),
           if (role == 'member') ...[
             _DockItem(
               icon: Icons.home,
@@ -137,6 +130,13 @@ class AppLayout extends ConsumerWidget {
               onTap: () => context.go('/member'),
             ),
           ],
+          const SizedBox(width: 16),
+          _DockItem(
+            icon: Icons.settings,
+            label: 'Settings',
+            isSelected: currentPath == '/settings',
+            onTap: () => context.go('/settings'),
+          ),
         ],
       ),
     );
