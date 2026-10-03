@@ -104,7 +104,7 @@ class _ActiveModeScreenState extends ConsumerState<ActiveModeScreen> {
                     children: [
                       Icon(Icons.qr_code_scanner, size: 100, color: theme.colorScheme.primary),
                       const SizedBox(height: 32),
-                      Text('Check-In Kiosk', style: theme.textTheme.displaySmall?.copyWith(fontWeight: FontWeight.bold)),
+                      Text('Check-In Scanner', style: theme.textTheme.displaySmall?.copyWith(fontWeight: FontWeight.bold)),
                       const SizedBox(height: 8),
                       Text('Scan member ID or enter phone number.', style: theme.textTheme.titleMedium?.copyWith(color: theme.colorScheme.outline)),
                       const SizedBox(height: 48),

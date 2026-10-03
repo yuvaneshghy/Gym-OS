@@ -131,7 +131,7 @@ class AppLayout extends ConsumerWidget {
             const SizedBox(width: 16),
             _DockItem(
               icon: Icons.qr_code_scanner,
-              label: 'Kiosk',
+              label: 'Check-In',
               isSelected: currentPath == '/kiosk',
               onTap: () => context.go('/kiosk'),
             ),

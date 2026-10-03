@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 
 import '../../payments/data/payments_repository.dart';
 import '../../payments/presentation/record_payment_dialog.dart';
@@ -70,6 +71,24 @@ class MemberProfileScreen extends ConsumerWidget {
                       Text(member.phone, style: Theme.of(context).textTheme.titleMedium?.copyWith(color: Theme.of(context).colorScheme.outline)),
                       const SizedBox(height: 8),
                       Text('Joined ${member.joinedOn.year}-${member.joinedOn.month.toString().padLeft(2, '0')}-${member.joinedOn.day.toString().padLeft(2, '0')}', style: Theme.of(context).textTheme.bodyMedium),
+                      const SizedBox(height: 24),
+                      
+                      // QR Code for Admins to view/scan/print
+                      Container(
+                        padding: const EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(16),
+                          border: Border.all(color: Theme.of(context).colorScheme.outlineVariant),
+                        ),
+                        child: QrImageView(
+                          data: member.id,
+                          size: 120.0,
+                          backgroundColor: Colors.white,
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      Text('Member ID: ${member.id}', style: Theme.of(context).textTheme.bodySmall?.copyWith(color: Theme.of(context).colorScheme.outline)),
                     ],
                   ),
                 ),
