@@ -53,6 +53,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
   }
 
   void _loadConfig() {
+    if (!mounted) return;
     final configAsync = ref.read(tenantConfigProvider);
     if (configAsync.hasValue) {
       setState(() {
