@@ -14,6 +14,9 @@ All notable changes to GymKit will be documented in this file.
 - **Tenant Config Loader**: Implemented `TenantConfigRepository` utilizing Riverpod to read tenant configuration first from shared preferences (cache) and then seamlessly refresh from the API.
 - **Seed Data**: Added dev-only seed script (`1790939800_seed_data.js`) to inject initial owner, member, plans, and configuration for rapid frontend testing.
 - **Mac/Gnome Dock Layout**: Added `AppLayout` wrapper using `ShellRoute` to wrap all authenticated screens with a dynamic Top Dock (Logo, App Name, Role, Logout) and Bottom Dock (Navigation).
+- **Theme Mode Switcher**: Added local `SharedPreferences` backed `ThemeModeNotifier` to allow users to toggle System/Light/Dark mode without affecting the tenant's brand color.
+- **Config Realtime AsyncNotifier**: Refactored `TenantConfigRepository` into a strict `AsyncNotifier` state machine. It immediately boots with cached memory, asynchronously streams fresh data from PocketBase, and dynamically invalidates the UI on successful background loads. 
+- **Developer Tools**: Upgraded `.gitignore` to safely track `pubspec.lock` while ignoring system locks, and added `-h` flag parsing to `git-sync.sh`.
 - **Custom Logo Integration**: `SettingsScreen` now supports uploading a custom logo to PocketBase using `image_picker`. The uploaded logo scales dynamically and displays on the `LoginScreen` and Top Dock.
 - **Dynamic Theming UI Polish**: Refactored Top/Bottom docks and Logout button to strictly adhere to the dynamic `Theme.of(context)` engine. Replaced hardcoded black shadows with `theme.shadowColor` and added `theme.colorScheme.outlineVariant` dock outlines.
 - **User-Friendly Login Errors**: Caught raw `ClientException` payloads in `LoginScreen` to display user-friendly "Invalid email or password." warnings on authentication failure.
