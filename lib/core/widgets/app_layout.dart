@@ -5,6 +5,7 @@ import '../../features/attendance/presentation/global_scanner_listener.dart';
 import '../../features/auth/data/auth_repository.dart';
 import '../config/tenant_config.dart';
 import '../config/tenant_config_repository.dart';
+import '../theme/app_tokens.dart';
 
 class AppLayout extends ConsumerWidget {
   const AppLayout({super.key, required this.child});
