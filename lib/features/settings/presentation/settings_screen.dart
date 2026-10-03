@@ -25,7 +25,8 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
   late TextEditingController _emailController;
   late TextEditingController _addressController;
   late TextEditingController _hexController;
-  late TextEditingController _currencyController;
+  
+  String _selectedCurrency = '₹';
 
   TenantConfig _currentConfig = const TenantConfig();
   bool _isLoading = false;
@@ -51,7 +52,6 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
     _emailController = TextEditingController();
     _addressController = TextEditingController();
     _hexController = TextEditingController();
-    _currencyController = TextEditingController();
     
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _loadConfig();
@@ -68,7 +68,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
         _phoneController.text = _currentConfig.gymPhone;
         _emailController.text = _currentConfig.gymEmail;
         _addressController.text = _currentConfig.gymAddress;
-        _currencyController.text = _currentConfig.currency;
+        _selectedCurrency = _currentConfig.currency;
         _hexController.text = '#${(_currentConfig.seedColor.toARGB32() & 0xFFFFFF).toRadixString(16).padLeft(6, '0').toUpperCase()}';
       });
     }
@@ -81,7 +81,6 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
     _emailController.dispose();
     _addressController.dispose();
     _hexController.dispose();
-    _currencyController.dispose();
     super.dispose();
   }
 
@@ -106,7 +105,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
         gymPhone: _phoneController.text,
         gymEmail: _emailController.text,
         gymAddress: _addressController.text,
-        currency: _currencyController.text.trim(),
+        currency: _selectedCurrency,
       );
       await notifier.updateConfig(newConfig);
       
@@ -245,15 +244,29 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                       maxLines: 2,
                     ),
                     const SizedBox(height: 16),
-                    TextFormField(
-                      controller: _currencyController,
+                    DropdownButtonFormField<String>(
+                      key: ValueKey(_selectedCurrency),
+                      initialValue: _selectedCurrency,
                       decoration: const InputDecoration(
-                        labelText: 'Default Currency Symbol',
-                        hintText: r'e.g. ₹, $, €, GBP',
+                        labelText: 'Default Currency',
                       ),
-                      maxLength: 5,
+                      items: const [
+                        DropdownMenuItem(value: '₹', child: Text('Indian Rupee (₹)')),
+                        DropdownMenuItem(value: r'$', child: Text(r'US Dollar ($)')),
+                        DropdownMenuItem(value: '€', child: Text('Euro (€)')),
+                        DropdownMenuItem(value: '£', child: Text('British Pound (£)')),
+                        DropdownMenuItem(value: r'A$', child: Text(r'Australian Dollar (A$)')),
+                        DropdownMenuItem(value: r'C$', child: Text(r'Canadian Dollar (C$)')),
+                        DropdownMenuItem(value: '¥', child: Text('Japanese Yen (¥)')),
+                      ],
+                      onChanged: (value) {
+                        if (value != null) {
+                          setState(() {
+                            _selectedCurrency = value;
+                          });
+                        }
+                      },
                     ),
-                    
                     const SizedBox(height: 32),
                     Text('Brand Appearance', style: Theme.of(context).textTheme.titleLarge),
                     const SizedBox(height: 16),
