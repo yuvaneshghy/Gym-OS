@@ -4,15 +4,17 @@ This document outlines the phased delivery plan for GymKit.
 
 ## 🟢 Phase 1: Core SaaS MVP (Current)
 - [x] Repo scaffold (feature-first, Riverpod, go_router, strict lints)
-- [ ] PocketBase schema + migrations + API rules (users, plans, members)
-- [ ] Tenant config loader + Theme System (`AppTokens`, `App*` widgets)
-- [ ] Authentication & Role-Based Access Control
-- [ ] Settings → Branding with live preview
-- [ ] Member management & Memberships
-- [ ] Manual Payments + Receipts
-- [ ] QR Attendance check-in
-- [ ] Owner Dashboard (Analytics)
-- [ ] Provisioning script (`ops/provision.sh`)
+- [x] PocketBase schema + migrations + API rules (users, plans, members)
+- [x] Tenant config loader + Theme System (AsyncNotifier + Dynamic Colors)
+- [x] Authentication & Role-Based Access Control
+- [x] Layout & Docks (macOS style dynamic docks)
+- [x] Settings → Branding with live preview (Local Theme Preferences)
+- [x] Admin Dashboard (Revenue, Members, Present Now metrics)
+- [ ] Member Management CRM (CRUD, profiles)
+- [ ] Membership Plans & Assignment (Creation, expiry tracking)
+- [ ] Manual Payments & Receipts (Invoices, partial payments)
+- [ ] Active Mode / Attendance (QR & Manual check-in, Live Feed)
+- [ ] Local Offline-first SQLite Sync (Future optimization)
 
 ## 🟡 Phase 1.5: Engagement & Fitness
 - [ ] Workout Plans (Sets, reps, weights assigned by trainers)
@@ -25,3 +27,4 @@ This document outlines the phased delivery plan for GymKit.
 - [ ] Payment Gateway Integration (Stripe / Razorpay)
 - [ ] Hardware Turnstile/RFID Integration
 - [ ] Push Notifications (FCM)
+
