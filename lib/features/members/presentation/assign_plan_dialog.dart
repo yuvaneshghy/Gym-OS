@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../core/config/tenant_config_repository.dart';
 import '../../plans/data/plans_repository.dart';
 import '../../plans/domain/plan.dart';
 import '../data/members_repository.dart';
@@ -55,6 +56,7 @@ class _AssignPlanDialogState extends ConsumerState<AssignPlanDialog> {
   @override
   Widget build(BuildContext context) {
     final plansAsync = ref.watch(plansListProvider);
+    final currency = ref.watch(tenantConfigProvider).value?.currency ?? '₹';
 
     return AlertDialog(
       title: Text('Assign Plan to ${widget.member.name}'),
@@ -86,7 +88,7 @@ class _AssignPlanDialogState extends ConsumerState<AssignPlanDialog> {
                   },
                   dropdownMenuEntries: plans.map((p) => DropdownMenuEntry(
                     value: p,
-                    label: '${p.name} - \$${p.price.toStringAsFixed(2)} (${p.durationDays} Days)',
+                    label: '${p.name} - $currency${p.price.toStringAsFixed(2)} (${p.durationDays} Days)',
                   )).toList(),
                 ),
               ],

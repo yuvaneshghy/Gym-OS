@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../core/config/tenant_config_repository.dart';
 import '../../../core/theme/app_tokens.dart';
 
 import '../../attendance/data/attendance_repository.dart';
@@ -12,6 +13,8 @@ class DashboardScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final statsAsync = ref.watch(dashboardStatsProvider);
+    final currency = ref.watch(tenantConfigProvider).value?.currency ?? '₹';
+
 
     return Scaffold(
       body: CustomScrollView(
@@ -43,7 +46,7 @@ class DashboardScreen extends ConsumerWidget {
                         _StatCard(title: 'Total Members', value: '${stats.totalMembers}', icon: Icons.people),
                         _StatCard(title: 'Active Members', value: '${stats.activeMembers}', icon: Icons.how_to_reg, color: context.tokens.successColor),
                         _StatCard(title: 'Present Today', value: '${stats.presentToday}', icon: Icons.fitness_center, color: context.tokens.warningColor),
-                        _StatCard(title: 'Revenue (Month)', value: '\$${stats.monthlyRevenue.toStringAsFixed(0)}', icon: Icons.attach_money, color: context.tokens.infoColor),
+                        _StatCard(title: 'Revenue (Month)', value: '$currency${stats.monthlyRevenue.toStringAsFixed(0)}', icon: Icons.attach_money, color: context.tokens.infoColor),
                       ],
                     ),
                     loading: () => const Padding(

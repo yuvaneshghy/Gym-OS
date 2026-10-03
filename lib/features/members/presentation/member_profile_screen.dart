@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
+import '../../../core/config/tenant_config_repository.dart';
 import '../../../core/theme/app_tokens.dart';
 
 import '../../payments/data/payments_repository.dart';
@@ -37,6 +38,7 @@ class MemberProfileScreen extends ConsumerWidget {
     final memberAsync = ref.watch(memberProfileProvider(memberId));
     final membershipsAsync = ref.watch(memberMembershipsProvider(memberId));
     final paymentsAsync = ref.watch(memberPaymentsProvider(memberId));
+    final currency = ref.watch(tenantConfigProvider).value?.currency ?? '₹';
 
     return Scaffold(
       appBar: AppBar(
@@ -227,7 +229,7 @@ class MemberProfileScreen extends ConsumerWidget {
                             ),
                             child: ListTile(
                               leading: const Icon(Icons.receipt_long),
-                              title: Text('\$${p.amount.toStringAsFixed(2)} via ${p.method.toUpperCase()}'),
+                              title: Text('$currency${p.amount.toStringAsFixed(2)} via ${p.method.toUpperCase()}'),
                               subtitle: Text('${p.date.year}-${p.date.month.toString().padLeft(2, '0')}-${p.date.day.toString().padLeft(2, '0')}${p.notes?.isNotEmpty == true ? ' • ${p.notes}' : ''}'),
                             ),
                           ),

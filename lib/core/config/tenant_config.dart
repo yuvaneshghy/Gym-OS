@@ -11,6 +11,7 @@ class TenantConfig {
     this.gymEmail = '',
     this.gymAddress = '',
     this.logoUrl = '',
+    this.currency = '₹', // Default to Indian Rupee as requested
   });
 
   factory TenantConfig.fromJson(Map<String, dynamic> json) {
@@ -31,6 +32,7 @@ class TenantConfig {
       gymEmail: json['gym_email'] as String? ?? '',
       gymAddress: json['gym_address'] as String? ?? '',
       logoUrl: json['logo_url'] as String? ?? '',
+      currency: json['currency'] as String? ?? '₹',
     );
   }
 
@@ -44,6 +46,7 @@ class TenantConfig {
     String? gymEmail,
     String? gymAddress,
     String? logoUrl,
+    String? currency,
   }) {
     return TenantConfig(
       seedColor: seedColor ?? this.seedColor,
@@ -55,6 +58,7 @@ class TenantConfig {
       gymEmail: gymEmail ?? this.gymEmail,
       gymAddress: gymAddress ?? this.gymAddress,
       logoUrl: logoUrl ?? this.logoUrl,
+      currency: currency ?? this.currency,
     );
   }
 
@@ -67,6 +71,7 @@ class TenantConfig {
   final String gymEmail;
   final String gymAddress;
   final String logoUrl;
+  final String currency;
 
   Map<String, dynamic> toJson() => {
         'seed_color': '#${(seedColor.toARGB32() & 0xFFFFFF).toRadixString(16).padLeft(6, '0')}',
@@ -78,5 +83,6 @@ class TenantConfig {
         'gym_email': gymEmail,
         'gym_address': gymAddress,
         'logo_url': logoUrl,
+        'currency': currency,
       };
 }

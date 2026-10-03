@@ -16,6 +16,7 @@ class AppLayout extends ConsumerWidget {
     final role = ref.watch(authRepositoryProvider).currentRole;
     final configAsync = ref.watch(tenantConfigProvider);
     final config = configAsync.value ?? const TenantConfig();
+    final tokens = context.tokens;
     
     // Build top dock
     final topDock = Container(
@@ -23,8 +24,8 @@ class AppLayout extends ConsumerWidget {
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       decoration: BoxDecoration(
         color: theme.colorScheme.surfaceContainerHighest.withAlpha(240),
-        borderRadius: BorderRadius.circular(24),
-        border: Border.all(color: theme.colorScheme.outline),
+        borderRadius: BorderRadius.circular(tokens.cornerRadius),
+        border: Border.all(color: theme.colorScheme.primary.withAlpha(100)),
         boxShadow: [
           BoxShadow(
             color: theme.shadowColor.withAlpha(50),
@@ -55,7 +56,7 @@ class AppLayout extends ConsumerWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                 decoration: BoxDecoration(
                   color: theme.colorScheme.primaryContainer,
-                  borderRadius: BorderRadius.circular(16),
+                  borderRadius: BorderRadius.circular(tokens.cornerRadius),
                 ),
                 child: Row(
                   children: [
@@ -94,8 +95,8 @@ class AppLayout extends ConsumerWidget {
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       decoration: BoxDecoration(
         color: theme.colorScheme.surfaceContainerHighest.withAlpha(240),
-        borderRadius: BorderRadius.circular(32),
-        border: Border.all(color: theme.colorScheme.outline),
+        borderRadius: BorderRadius.circular(tokens.cornerRadius),
+        border: Border.all(color: theme.colorScheme.primary.withAlpha(100)),
         boxShadow: [
           BoxShadow(
             color: theme.shadowColor.withAlpha(50),

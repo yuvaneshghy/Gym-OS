@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../core/config/tenant_config_repository.dart';
 import '../data/payments_repository.dart';
 
 class RecordPaymentDialog extends ConsumerStatefulWidget {
@@ -79,6 +80,8 @@ class _RecordPaymentDialogState extends ConsumerState<RecordPaymentDialog> {
 
   @override
   Widget build(BuildContext context) {
+    final currency = ref.watch(tenantConfigProvider).value?.currency ?? '₹';
+
     return AlertDialog(
       title: const Text('Record Payment'),
       content: SizedBox(
@@ -99,7 +102,7 @@ class _RecordPaymentDialogState extends ConsumerState<RecordPaymentDialog> {
                   ),
                 TextFormField(
                   controller: _amountController,
-                  decoration: const InputDecoration(labelText: 'Amount', prefixText: r'$'),
+                  decoration: InputDecoration(labelText: 'Amount', prefixText: currency),
                   keyboardType: const TextInputType.numberWithOptions(decimal: true),
                   validator: (v) => v == null || v.isEmpty ? 'Required' : null,
                 ),

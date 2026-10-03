@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
+import '../../../core/config/tenant_config_repository.dart';
 import '../../../core/theme/app_tokens.dart';
 import '../../auth/data/auth_repository.dart';
 import '../../payments/data/payments_repository.dart';
@@ -27,6 +28,7 @@ class MemberHomeScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final memberAsync = ref.watch(currentMemberProvider);
+    final currency = ref.watch(tenantConfigProvider).value?.currency ?? '₹';
     final theme = Theme.of(context);
     final tokens = context.tokens;
 
@@ -55,7 +57,7 @@ class MemberHomeScreen extends ConsumerWidget {
                 const SizedBox(height: 32),
                 _buildPlanSection(context, ref, member.id, theme, tokens),
                 const SizedBox(height: 32),
-                _buildPaymentsSection(context, ref, member.id, theme, tokens),
+                _buildPaymentsSection(context, ref, member.id, theme, tokens, currency),
               ],
             ),
           );
@@ -207,7 +209,7 @@ class MemberHomeScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildPaymentsSection(BuildContext context, WidgetRef ref, String memberId, ThemeData theme, AppTokens tokens) {
+  Widget _buildPaymentsSection(BuildContext context, WidgetRef ref, String memberId, ThemeData theme, AppTokens tokens, String currency) {
     final paymentsAsync = ref.watch(memberPaymentsProvider(memberId));
 
     return Column(
@@ -243,7 +245,7 @@ class MemberHomeScreen extends ConsumerWidget {
                       backgroundColor: theme.colorScheme.secondaryContainer,
                       child: Icon(Icons.attach_money, color: theme.colorScheme.onSecondaryContainer),
                     ),
-                    title: Text('\$${p.amount.toStringAsFixed(2)}', style: const TextStyle(fontWeight: FontWeight.bold)),
+                    title: Text('$currency${p.amount.toStringAsFixed(2)}', style: const TextStyle(fontWeight: FontWeight.bold)),
                     subtitle: Text(DateFormat.yMMMd().format(p.date)),
                     trailing: Text(p.method.toUpperCase(), style: theme.textTheme.labelSmall),
                   );

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../core/config/tenant_config_repository.dart';
 import '../../../core/theme/app_tokens.dart';
 
 import '../data/plans_repository.dart';
@@ -12,6 +13,8 @@ class PlansScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final plansAsync = ref.watch(plansListProvider);
+    final currency = ref.watch(tenantConfigProvider).value?.currency ?? '₹';
+
 
     return Scaffold(
       body: CustomScrollView(
@@ -101,7 +104,7 @@ class PlansScreen extends ConsumerWidget {
                               const Spacer(),
                               Text('${plan.durationDays} Days', style: Theme.of(context).textTheme.bodyLarge),
                               const SizedBox(height: 8),
-                              Text('\$${plan.price.toStringAsFixed(2)}', style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                              Text('$currency${plan.price.toStringAsFixed(2)}', style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                                 color: Theme.of(context).colorScheme.primary,
                                 fontWeight: FontWeight.w900,
                               )),
