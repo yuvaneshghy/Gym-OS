@@ -22,12 +22,12 @@ This document breaks down the immediate next steps to complete **Phase 1: Core S
   - Create `MemberProfileScreen` (Detailed view showing their active plans, payment history, and attendance graph).
   - Add "New Member" modal/form (capturing face photo/avatar, contact info).
 
-### 3. Membership & Plans
+### 3. Membership & Plans (In Progress)
 **Objective**: Allow admins to create standard plans (e.g., "Monthly Cardio", "Annual Elite") and assign them to members.
 - **Tasks**:
-  - `PlanManagementScreen` (CRUD operations for predefined gym plans).
-  - UI flow to assign a plan to a member from their profile.
-  - Logic to calculate expiry dates and grace periods.
+  - [x] `PlanManagementScreen` (CRUD operations for predefined gym plans).
+  - [ ] UI flow to assign a plan to a member from their profile.
+  - [ ] Logic to calculate expiry dates and grace periods.
 
 ### 4. Payments & Billing
 **Objective**: Record financial transactions securely.
