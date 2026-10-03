@@ -34,6 +34,8 @@ class AuthRepository {
 
   bool get isAuthenticated => _pb.authStore.isValid;
   
+  RecordModel? get currentUser => _pb.authStore.record;
+  
   String? get currentRole => _pb.authStore.record?.getStringValue('role');
 
   Future<void> login(String email, String password) async {

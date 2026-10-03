@@ -48,4 +48,32 @@ class MembersRepository {
       'joined_on': DateTime.now().toUtc().toIso8601String().replaceFirst('T', ' '),
     });
   }
+
+  Future<void> updateCurrentMember({
+    required String memberId,
+    required String userId,
+    required String name,
+    required String phone,
+  }) async {
+    // Update user auth record
+    await _pb.collection('users').update(userId, body: {
+      'name': name,
+    });
+    // Update member record
+    await _pb.collection('members').update(memberId, body: {
+      'name': name,
+      'phone': phone,
+    });
+  }
+
+  Future<Member?> getCurrentMember() async {
+    final userId = _pb.authStore.record?.id;
+    if (userId == null) return null;
+    try {
+      final res = await _pb.collection('members').getFirstListItem('user="$userId"');
+      return Member.fromRecord(res);
+    } on Object catch (_) {
+      return null;
+    }
+  }
 }

@@ -5,6 +5,7 @@ import '../../../core/config/tenant_config.dart';
 import '../../../core/config/tenant_config_repository.dart';
 import '../../../core/theme/theme_mode_provider.dart';
 import '../../auth/data/auth_repository.dart';
+import 'member_profile_settings.dart';
 
 class SettingsScreen extends ConsumerStatefulWidget {
   const SettingsScreen({super.key});
@@ -310,6 +311,8 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                       },
                     ),
                     ] else ...[
+                      const MemberProfileSettings(),
+                      const SizedBox(height: 32),
                       Text('Gym Contact Info', style: Theme.of(context).textTheme.titleLarge),
                       const SizedBox(height: 16),
                       Card(
