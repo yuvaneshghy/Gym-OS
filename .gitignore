@@ -22,7 +22,6 @@ migrate_working_dir/
 
 # Temporary Scripts & Locks
 *.lock
-!pubspec.lock
 tmp/
 temp/
 scratch/
