@@ -4,6 +4,7 @@ import 'package:image_picker/image_picker.dart';
 import '../../../core/config/tenant_config.dart';
 import '../../../core/config/tenant_config_repository.dart';
 import '../../../core/theme/theme_mode_provider.dart';
+import '../../auth/data/auth_repository.dart';
 
 class SettingsScreen extends ConsumerStatefulWidget {
   const SettingsScreen({super.key});
@@ -160,10 +161,10 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text('Gym Settings', style: Theme.of(context).textTheme.headlineMedium),
+                        Text('Settings', style: Theme.of(context).textTheme.headlineMedium),
                         if (_isLoading)
                           const SizedBox(width: 24, height: 24, child: CircularProgressIndicator(strokeWidth: 2))
-                        else
+                        else if (ref.watch(authRepositoryProvider).currentRole == 'owner')
                           ElevatedButton.icon(
                             icon: const Icon(Icons.save),
                             label: const Text('Save Configuration'),
@@ -191,7 +192,8 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                       },
                     ),
                     const SizedBox(height: 32),
-                    Text('Gym Profile', style: Theme.of(context).textTheme.titleLarge),
+                    if (ref.watch(authRepositoryProvider).currentRole == 'owner') ...[
+                      Text('Gym Profile', style: Theme.of(context).textTheme.titleLarge),
                     const SizedBox(height: 16),
                     TextFormField(
                       controller: _nameController,
@@ -306,6 +308,50 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                         _updateConfig(_currentConfig.copyWith(cornerRadius: val));
                       },
                     ),
+                    ] else ...[
+                      Text('Gym Contact Info', style: Theme.of(context).textTheme.titleLarge),
+                      const SizedBox(height: 16),
+                      Card(
+                        elevation: 0,
+                        color: Theme.of(context).colorScheme.surfaceContainerHighest.withAlpha(100),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(16),
+                          side: BorderSide(color: Theme.of(context).colorScheme.outlineVariant),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(20.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              if (_currentConfig.gymName.isNotEmpty)
+                                ListTile(
+                                  leading: const Icon(Icons.fitness_center),
+                                  title: Text(_currentConfig.gymName, style: const TextStyle(fontWeight: FontWeight.bold)),
+                                  contentPadding: EdgeInsets.zero,
+                                ),
+                              if (_currentConfig.gymPhone.isNotEmpty)
+                                ListTile(
+                                  leading: const Icon(Icons.phone),
+                                  title: Text(_currentConfig.gymPhone),
+                                  contentPadding: EdgeInsets.zero,
+                                ),
+                              if (_currentConfig.gymEmail.isNotEmpty)
+                                ListTile(
+                                  leading: const Icon(Icons.email),
+                                  title: Text(_currentConfig.gymEmail),
+                                  contentPadding: EdgeInsets.zero,
+                                ),
+                              if (_currentConfig.gymAddress.isNotEmpty)
+                                ListTile(
+                                  leading: const Icon(Icons.location_on),
+                                  title: Text(_currentConfig.gymAddress),
+                                  contentPadding: EdgeInsets.zero,
+                                ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
                     const SizedBox(height: 48),
                   ],
                 ),
