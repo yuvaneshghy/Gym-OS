@@ -5,6 +5,7 @@ import '../core/widgets/app_layout.dart';
 import '../features/attendance/presentation/active_mode_screen.dart';
 import '../features/auth/data/auth_repository.dart';
 import '../features/auth/presentation/login_screen.dart';
+import '../features/classes/presentation/classes_screen.dart';
 import '../features/dashboard/presentation/dashboard_screen.dart';
 import '../features/members/presentation/member_home_screen.dart';
 import '../features/members/presentation/member_profile_screen.dart';
@@ -12,6 +13,7 @@ import '../features/members/presentation/members_directory_screen.dart';
 import '../features/plans/presentation/plans_screen.dart';
 import '../features/settings/presentation/settings_screen.dart';
 import '../features/staff/presentation/staff_screen.dart';
+import '../features/workouts/presentation/workouts_screen.dart';
 
 /// The global GoRouter configuration as a Riverpod provider.
 final routerProvider = Provider<GoRouter>((ref) {
@@ -98,6 +100,14 @@ final routerProvider = Provider<GoRouter>((ref) {
           GoRoute(
             path: '/kiosk',
             builder: (context, state) => const ActiveModeScreen(),
+          ),
+          GoRoute(
+            path: '/workouts',
+            builder: (context, state) => const WorkoutsScreen(),
+          ),
+          GoRoute(
+            path: '/classes',
+            builder: (context, state) => const ClassesScreen(),
           ),
           GoRoute(
             path: '/member',
