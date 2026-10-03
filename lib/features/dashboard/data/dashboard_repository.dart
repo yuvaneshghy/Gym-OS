@@ -28,15 +28,15 @@ class DashboardRepository {
 
     try {
       // 1. Total members
-      final membersRes = await _pb.collection('members').getList(page: 1, perPage: 1);
+      final membersRes = await _pb.collection('members').getList(perPage: 1);
       final totalMembers = membersRes.totalItems;
 
       // 2. Active members (memberships ending >= today)
-      final activeRes = await _pb.collection('memberships').getList(page: 1, perPage: 1, filter: "end_date >= '$todayStr'");
+      final activeRes = await _pb.collection('memberships').getList(perPage: 1, filter: "end_date >= '$todayStr'");
       final activeMembers = activeRes.totalItems;
 
       // 3. Present today
-      final attendanceRes = await _pb.collection('attendance').getList(page: 1, perPage: 1, filter: "check_in_time >= '$todayStr'");
+      final attendanceRes = await _pb.collection('attendance').getList(perPage: 1, filter: "check_in_time >= '$todayStr'");
       final presentToday = attendanceRes.totalItems;
 
       // 4. Monthly Revenue
