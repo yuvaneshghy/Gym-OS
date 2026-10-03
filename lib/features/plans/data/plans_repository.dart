@@ -33,4 +33,21 @@ class PlansRepository {
       'price': price,
     });
   }
+
+  Future<void> updatePlan({
+    required String id,
+    required String name,
+    required int durationDays,
+    required double price,
+  }) async {
+    await _pb.collection('plans').update(id, body: {
+      'name': name,
+      'duration_days': durationDays,
+      'price': price,
+    });
+  }
+
+  Future<void> deletePlan(String id) async {
+    await _pb.collection('plans').delete(id);
+  }
 }

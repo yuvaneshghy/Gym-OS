@@ -3,11 +3,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
+import '../../../core/theme/app_tokens.dart';
+
 import '../../payments/data/payments_repository.dart';
 import '../../payments/presentation/record_payment_dialog.dart';
 import '../data/members_repository.dart';
 import '../domain/member.dart';
 import '../domain/membership.dart';
+import 'add_member_dialog.dart';
 import 'assign_plan_dialog.dart';
 
 final memberProfileProvider = FutureProvider.family.autoDispose<Member?, String>((ref, id) async {
@@ -42,6 +45,47 @@ class MemberProfileScreen extends ConsumerWidget {
           onPressed: () => context.go('/members'),
         ),
         title: const Text('Member Profile'),
+        actions: [
+          if (memberAsync.hasValue && memberAsync.value != null)
+            PopupMenuButton<String>(
+              onSelected: (val) async {
+                if (val == 'edit') {
+                  await showDialog<void>(
+                    context: context,
+                    builder: (_) => AddMemberDialog(existingMember: memberAsync.value),
+                  );
+                  ref.invalidate(memberProfileProvider(memberId));
+                } else if (val == 'delete') {
+                  final confirm = await showDialog<bool>(
+                    context: context,
+                    builder: (ctx) => AlertDialog(
+                      title: const Text('Delete Member?'),
+                      content: const Text('Are you sure you want to permanently delete this member? All their data will be lost.'),
+                      actions: [
+                        TextButton(onPressed: () => Navigator.pop(ctx, false), child: const Text('Cancel')),
+                        FilledButton(
+                          style: FilledButton.styleFrom(backgroundColor: Theme.of(context).colorScheme.error),
+                          onPressed: () => Navigator.pop(ctx, true), 
+                          child: const Text('Delete'),
+                        ),
+                      ],
+                    ),
+                  );
+                  if (confirm == true) {
+                    await ref.read(membersRepositoryProvider).deleteMemberAdmin(memberId, memberAsync.value!.userId);
+                    ref.invalidate(membersListProvider);
+                    if (context.mounted) {
+                      context.go('/members');
+                    }
+                  }
+                }
+              },
+              itemBuilder: (_) => [
+                const PopupMenuItem(value: 'edit', child: Text('Edit Profile')),
+                const PopupMenuItem(value: 'delete', child: Text('Delete Member', style: TextStyle(color: Colors.red))),
+              ],
+            ),
+        ],
       ),
       body: memberAsync.when(
         data: (member) {
@@ -77,14 +121,14 @@ class MemberProfileScreen extends ConsumerWidget {
                       Container(
                         padding: const EdgeInsets.all(12),
                         decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(16),
+                          color: const Color(0xFFFFFFFF),
+                          borderRadius: BorderRadius.circular(context.tokens.cornerRadius),
                           border: Border.all(color: Theme.of(context).colorScheme.outlineVariant),
                         ),
                         child: QrImageView(
                           data: member.id,
                           size: 120.0,
-                          backgroundColor: Colors.white,
+                          backgroundColor: const Color(0xFFFFFFFF),
                         ),
                       ),
                       const SizedBox(height: 8),
@@ -125,7 +169,7 @@ class MemberProfileScreen extends ConsumerWidget {
                               ? Theme.of(context).colorScheme.primaryContainer.withAlpha(50)
                               : Theme.of(context).colorScheme.surfaceContainerHighest.withAlpha(50),
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(16),
+                              borderRadius: BorderRadius.circular(context.tokens.cornerRadius),
                               side: BorderSide(
                                 color: m.isActive ? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.outlineVariant,
                               ),
@@ -135,7 +179,7 @@ class MemberProfileScreen extends ConsumerWidget {
                               subtitle: Text('${m.startDate.year}-${m.startDate.month.toString().padLeft(2, '0')}-${m.startDate.day.toString().padLeft(2, '0')} to ${m.endDate.year}-${m.endDate.month.toString().padLeft(2, '0')}-${m.endDate.day.toString().padLeft(2, '0')}'),
                               trailing: Chip(
                                 label: Text(m.isActive ? 'ACTIVE' : 'EXPIRED'),
-                                backgroundColor: m.isActive ? Colors.green.withAlpha(50) : Colors.red.withAlpha(50),
+                                backgroundColor: m.isActive ? context.tokens.successColor.withAlpha(50) : context.tokens.dangerColor.withAlpha(50),
                                 side: BorderSide.none,
                               ),
                             ),
@@ -178,7 +222,7 @@ class MemberProfileScreen extends ConsumerWidget {
                           child: Card(
                             elevation: 0,
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
+                              borderRadius: BorderRadius.circular(context.tokens.cornerRadius),
                               side: BorderSide(color: Theme.of(context).colorScheme.outlineVariant),
                             ),
                             child: ListTile(

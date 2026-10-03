@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-
 import 'package:qr_flutter/qr_flutter.dart';
+
+import '../../../core/theme/app_tokens.dart';
 import '../../auth/data/auth_repository.dart';
 import '../data/members_repository.dart';
 import '../domain/member.dart';
@@ -40,11 +40,11 @@ class MemberHomeScreen extends ConsumerWidget {
                 Container(
                   padding: const EdgeInsets.all(24),
                   decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(24),
+                    color: const Color(0xFFFFFFFF),
+                    borderRadius: BorderRadius.circular(context.tokens.cornerRadius),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withAlpha(20),
+                        color: const Color(0xFF000000).withAlpha(20),
                         blurRadius: 20,
                         offset: const Offset(0, 10),
                       ),
@@ -53,7 +53,7 @@ class MemberHomeScreen extends ConsumerWidget {
                   child: QrImageView(
                     data: member.id,
                     size: 250.0,
-                    backgroundColor: Colors.white,
+                    backgroundColor: const Color(0xFFFFFFFF),
                   ),
                 ),
                 const SizedBox(height: 32),

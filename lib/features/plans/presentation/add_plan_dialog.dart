@@ -3,9 +3,11 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../data/plans_repository.dart';
+import '../domain/plan.dart';
 
 class AddPlanDialog extends ConsumerStatefulWidget {
-  const AddPlanDialog({super.key});
+  const AddPlanDialog({super.key, this.existingPlan});
+  final Plan? existingPlan;
 
   @override
   ConsumerState<AddPlanDialog> createState() => _AddPlanDialogState();
@@ -20,6 +22,16 @@ class _AddPlanDialogState extends ConsumerState<AddPlanDialog> {
   
   bool _isLoading = false;
   String? _error;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.existingPlan != null) {
+      _nameController.text = widget.existingPlan!.name;
+      _durationController.text = widget.existingPlan!.durationDays.toString();
+      _priceController.text = widget.existingPlan!.price.toString();
+    }
+  }
 
   @override
   void dispose() {
@@ -38,18 +50,27 @@ class _AddPlanDialogState extends ConsumerState<AddPlanDialog> {
     });
     
     try {
-      await ref.read(plansRepositoryProvider).createPlan(
-        name: _nameController.text.trim(),
-        durationDays: int.parse(_durationController.text),
-        price: double.parse(_priceController.text),
-      );
+      if (widget.existingPlan != null) {
+        await ref.read(plansRepositoryProvider).updatePlan(
+          id: widget.existingPlan!.id,
+          name: _nameController.text.trim(),
+          durationDays: int.parse(_durationController.text),
+          price: double.parse(_priceController.text),
+        );
+      } else {
+        await ref.read(plansRepositoryProvider).createPlan(
+          name: _nameController.text.trim(),
+          durationDays: int.parse(_durationController.text),
+          price: double.parse(_priceController.text),
+        );
+      }
       
       ref.invalidate(plansListProvider);
       
       if (mounted) {
         Navigator.of(context).pop();
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Plan created successfully!')),
+          SnackBar(content: Text(widget.existingPlan != null ? 'Plan updated successfully!' : 'Plan created successfully!')),
         );
       }
     } on Object catch (e) {
@@ -63,7 +84,7 @@ class _AddPlanDialogState extends ConsumerState<AddPlanDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text('Create New Plan'),
+      title: Text(widget.existingPlan != null ? 'Edit Plan' : 'Create New Plan'),
       content: SizedBox(
         width: 400,
         child: SingleChildScrollView(
@@ -113,7 +134,7 @@ class _AddPlanDialogState extends ConsumerState<AddPlanDialog> {
           onPressed: _isLoading ? null : _submit,
           child: _isLoading 
               ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(strokeWidth: 2))
-              : const Text('Create Plan'),
+              : Text(widget.existingPlan != null ? 'Save Changes' : 'Create Plan'),
         ),
       ],
     );

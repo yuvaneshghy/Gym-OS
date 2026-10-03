@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../core/theme/app_tokens.dart';
+
 import '../data/plans_repository.dart';
 import 'add_plan_dialog.dart';
 
@@ -48,7 +50,7 @@ class PlansScreen extends ConsumerWidget {
                         elevation: 0,
                         color: Theme.of(context).colorScheme.surfaceContainerHighest.withAlpha(100),
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(24),
+                          borderRadius: BorderRadius.circular(context.tokens.cornerRadius),
                           side: BorderSide(color: Theme.of(context).colorScheme.outlineVariant),
                         ),
                         child: Padding(
@@ -56,7 +58,46 @@ class PlansScreen extends ConsumerWidget {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(plan.name, style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold)),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Expanded(child: Text(plan.name, style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold))),
+                                  PopupMenuButton<String>(
+                                    onSelected: (val) async {
+                                      if (val == 'edit') {
+                                        await showDialog<void>(
+                                          context: context,
+                                          builder: (_) => AddPlanDialog(existingPlan: plan),
+                                        );
+                                      } else if (val == 'delete') {
+                                        final confirm = await showDialog<bool>(
+                                          context: context,
+                                          builder: (ctx) => AlertDialog(
+                                            title: const Text('Delete Plan?'),
+                                            content: const Text('Are you sure you want to delete this plan? Active memberships will not be deleted, but no new members can be assigned.'),
+                                            actions: [
+                                              TextButton(onPressed: () => Navigator.pop(ctx, false), child: const Text('Cancel')),
+                                              FilledButton(
+                                                style: FilledButton.styleFrom(backgroundColor: Theme.of(context).colorScheme.error),
+                                                onPressed: () => Navigator.pop(ctx, true), 
+                                                child: const Text('Delete'),
+                                              ),
+                                            ],
+                                          ),
+                                        );
+                                        if (confirm == true) {
+                                          await ref.read(plansRepositoryProvider).deletePlan(plan.id);
+                                          ref.invalidate(plansListProvider);
+                                        }
+                                      }
+                                    },
+                                    itemBuilder: (_) => [
+                                      const PopupMenuItem(value: 'edit', child: Text('Edit Plan')),
+                                      const PopupMenuItem(value: 'delete', child: Text('Delete', style: TextStyle(color: Colors.red))),
+                                    ],
+                                  ),
+                                ],
+                              ),
                               const Spacer(),
                               Text('${plan.durationDays} Days', style: Theme.of(context).textTheme.bodyLarge),
                               const SizedBox(height: 8),

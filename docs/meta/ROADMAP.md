@@ -2,7 +2,7 @@
 
 This document outlines the phased delivery plan for GymKit.
 
-## 🟢 Phase 1: Core SaaS MVP (Current)
+## 🟢 Phase 1: Core SaaS MVP (Complete)
 - [x] Repo scaffold (feature-first, Riverpod, go_router, strict lints)
 - [x] PocketBase schema + migrations + API rules (users, plans, members)
 - [x] Tenant config loader + Theme System (AsyncNotifier + Dynamic Colors)
@@ -16,7 +16,8 @@ This document outlines the phased delivery plan for GymKit.
 - [x] Active Mode / Attendance (QR & Manual check-in, Live Feed)
 - [ ] Local Offline-first SQLite Sync (Future optimization)
 
-## 🟡 Phase 1.5: Engagement & Fitness
+## 🟡 Phase 1.5: Engagement & Fitness (Current)
+- [ ] Staff & Employee Management (Roles, permissions, invites)
 - [ ] Workout Plans (Sets, reps, weights assigned by trainers)
 - [ ] Progress Tracking (Measurements, photos)
 - [ ] Group Classes & Slot Bookings

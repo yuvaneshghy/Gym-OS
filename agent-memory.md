@@ -178,15 +178,15 @@ Build v1 as thin vertical slices. Do not start v1.5 features until v1 is stable 
 
 - [x] Agent memory created
 - [x] Repo scaffold (feature-first, Riverpod, go_router, lints, theme grep check)
-- [ ] PocketBase schema + migrations + API rules (v1 collections)
-- [ ] Tenant config loader + `buildTheme` + `AppTokens` + `App*` widgets
-- [ ] Settings → Branding with live preview
-- [ ] Auth + roles
-- [ ] Members & memberships
-- [ ] Payments + receipts
-- [ ] QR attendance
+- [x] PocketBase schema + migrations + API rules (v1 collections)
+- [x] Tenant config loader + `buildTheme` + `AppTokens` + `App*` widgets
+- [x] Settings → Branding with live preview
+- [x] Auth + roles
+- [x] Members & memberships
+- [x] Payments + receipts
+- [x] QR attendance
 - [ ] Expiry/dues reminders (hooks)
-- [ ] Owner dashboard
+- [x] Owner dashboard
 - [ ] Provisioning script (new client in <10 min)
 - [ ] CI flavor matrix
 - [ ] Backup + update scripts for the fleet

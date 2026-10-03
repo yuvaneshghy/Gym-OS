@@ -13,6 +13,8 @@ ThemeData buildGymKitTheme({
   final tokens = AppTokens(
     successColor: const Color(0xFF2E7D32),
     warningColor: const Color(0xFFED6C02),
+    dangerColor: const Color(0xFFD32F2F),
+    infoColor: const Color(0xFF0288D1),
     cornerRadius: cornerRadius,
   );
 

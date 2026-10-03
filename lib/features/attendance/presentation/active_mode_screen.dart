@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../core/theme/app_tokens.dart';
+
 import '../../members/data/members_repository.dart';
 import '../data/attendance_repository.dart';
 
@@ -117,7 +119,7 @@ class _ActiveModeScreenState extends ConsumerState<ActiveModeScreen> {
                           autofocus: true,
                           decoration: InputDecoration(
                             hintText: 'e.g. 555-0192 or mem_123',
-                            border: OutlineInputBorder(borderRadius: BorderRadius.circular(16)),
+                            border: OutlineInputBorder(borderRadius: BorderRadius.circular(context.tokens.cornerRadius)),
                             filled: true,
                             fillColor: theme.colorScheme.surfaceContainerHighest,
                             suffixIcon: _isProcessing 
@@ -200,8 +202,8 @@ class _ActiveModeScreenState extends ConsumerState<ActiveModeScreen> {
                 opacity: 1.0,
                 child: ColoredBox(
                   color: _overlayStatus == 'GRANTED'
-                      ? Colors.green.withAlpha(230)
-                      : Colors.redAccent.withAlpha(230),
+                      ? context.tokens.successColor.withAlpha(230)
+                      : context.tokens.dangerColor.withAlpha(230),
                   child: Center(
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
@@ -209,7 +211,7 @@ class _ActiveModeScreenState extends ConsumerState<ActiveModeScreen> {
                         Icon(
                           _overlayStatus == 'GRANTED' ? Icons.check_circle : Icons.error,
                           size: 150,
-                          color: Colors.white,
+                          color: const Color(0xFFFFFFFF),
                         ),
                         const SizedBox(height: 24),
                         Text(
@@ -220,7 +222,7 @@ class _ActiveModeScreenState extends ConsumerState<ActiveModeScreen> {
                                   : 'MEMBER NOT FOUND',
                           textAlign: TextAlign.center,
                           style: theme.textTheme.displayMedium?.copyWith(
-                            color: Colors.white,
+                            color: const Color(0xFFFFFFFF),
                             fontWeight: FontWeight.bold,
                           ),
                         ),

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../core/theme/app_tokens.dart';
+
 import '../../attendance/data/attendance_repository.dart';
 import '../data/dashboard_repository.dart';
 
@@ -39,9 +41,9 @@ class DashboardScreen extends ConsumerWidget {
                       physics: const NeverScrollableScrollPhysics(),
                       children: [
                         _StatCard(title: 'Total Members', value: '${stats.totalMembers}', icon: Icons.people),
-                        _StatCard(title: 'Active Members', value: '${stats.activeMembers}', icon: Icons.how_to_reg, color: Colors.green),
-                        _StatCard(title: 'Present Today', value: '${stats.presentToday}', icon: Icons.fitness_center, color: Colors.orange),
-                        _StatCard(title: 'Revenue (Month)', value: '₹${stats.monthlyRevenue.toStringAsFixed(0)}', icon: Icons.currency_rupee, color: Colors.blue),
+                        _StatCard(title: 'Active Members', value: '${stats.activeMembers}', icon: Icons.how_to_reg, color: context.tokens.successColor),
+                        _StatCard(title: 'Present Today', value: '${stats.presentToday}', icon: Icons.fitness_center, color: context.tokens.warningColor),
+                        _StatCard(title: 'Revenue (Month)', value: '\$${stats.monthlyRevenue.toStringAsFixed(0)}', icon: Icons.attach_money, color: context.tokens.infoColor),
                       ],
                     ),
                     loading: () => const Padding(
@@ -80,7 +82,7 @@ class DashboardScreen extends ConsumerWidget {
                               return ListTile(
                                 tileColor: Theme.of(context).colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
                                 shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(12),
+                                  borderRadius: BorderRadius.circular(context.tokens.cornerRadius),
                                   side: BorderSide(color: Theme.of(context).colorScheme.outlineVariant),
                                 ),
                                 leading: CircleAvatar(
@@ -135,7 +137,7 @@ class _StatCard extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(context.tokens.cornerRadius),
         border: Border.all(color: Theme.of(context).colorScheme.outlineVariant),
       ),
       padding: const EdgeInsets.all(20),
@@ -149,7 +151,7 @@ class _StatCard extends StatelessWidget {
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
                   color: baseColor.withValues(alpha: 0.1),
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(context.tokens.cornerRadius),
                 ),
                 child: Icon(icon, color: baseColor),
               ),

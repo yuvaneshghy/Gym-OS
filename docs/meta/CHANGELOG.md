@@ -4,6 +4,13 @@ All notable changes to GymKit will be documented in this file.
 
 ## [Unreleased]
 ### Added
+- **Staff Management (Phase 1.5)**: Implemented `StaffScreen` and `AddStaffDialog` within the Settings module. Owners can now create sub-accounts for trainers, receptionists, and managers with specific role-based permissions.
+- **Dashboard**: Created `DashboardScreen` displaying metrics like Total Members, Active Members, Present Today, and Monthly Revenue.
+- **Member CRM (Directory & Profile)**: Built `MembersDirectoryScreen` with real-time search/filter capabilities and an "Add Member" dialog. Built `MemberProfileScreen` enabling admins to edit member profiles, assign plans, and delete members.
+- **Plans Management**: Implemented `PlansScreen` allowing admins to create, edit, and delete plans.
+- **Payments Integration**: Added `RecordPaymentDialog` for tracking membership fees, methods, and generation dates.
+- **Check-In Scanner (Active Mode)**: Added `ActiveModeScreen` as a kiosk/scanner for fast member check-ins. Supports manual ID entry and displays a success/failure overlay on scan.
+- **Member Home (QR Code)**: Created `MemberHomeScreen` integrating `qr_flutter` to display the member's digital ID for easy check-ins.
 - **Theme Engine**: Built `buildGymKitTheme()` to dynamically generate `ThemeData` based on tenant config (`app_config`), ensuring 100% white-label capability (Phase 1).
 - **Core UI Wrappers**: Scaffolded `AppButton` and `AppTextField` that strictly adhere to the tenant's `Theme.of(context)` to prevent hardcoded styles.
 - **Role-Based Routing**: Implemented `GoRouter` configuration in `router.dart` with automatic role-based redirection (`/dashboard` for staff, `/member` for customers, `/login` for unauthenticated).

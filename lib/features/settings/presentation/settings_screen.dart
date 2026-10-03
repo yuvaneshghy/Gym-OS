@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
+
 import '../../../core/config/tenant_config.dart';
 import '../../../core/config/tenant_config_repository.dart';
+import '../../../core/theme/app_tokens.dart';
 import '../../../core/theme/theme_mode_provider.dart';
 import '../../auth/data/auth_repository.dart';
 import 'member_profile_settings.dart';
@@ -195,6 +198,24 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                     ),
                     const SizedBox(height: 32),
                     if (ref.watch(authRepositoryProvider).currentRole == 'owner') ...[
+                      Text('Team Management', style: Theme.of(context).textTheme.titleLarge),
+                      const SizedBox(height: 16),
+                      ListTile(
+                        tileColor: Theme.of(context).colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(context.tokens.cornerRadius),
+                          side: BorderSide(color: Theme.of(context).colorScheme.outlineVariant),
+                        ),
+                        leading: const Icon(Icons.group),
+                        title: const Text('Manage Staff & Employees', style: TextStyle(fontWeight: FontWeight.bold)),
+                        subtitle: const Text('Create accounts for trainers and managers'),
+                        trailing: const Icon(Icons.chevron_right),
+                        onTap: () {
+                          context.go('/settings/staff');
+                        },
+                      ),
+                      const SizedBox(height: 32),
+
                       Text('Gym Profile', style: Theme.of(context).textTheme.titleLarge),
                     const SizedBox(height: 16),
                     TextFormField(
@@ -231,7 +252,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                           height: 64,
                           decoration: BoxDecoration(
                             color: Theme.of(context).colorScheme.surfaceContainerHighest,
-                            borderRadius: BorderRadius.circular(8),
+                            borderRadius: BorderRadius.circular(context.tokens.cornerRadius),
                           ),
                           clipBehavior: Clip.antiAlias,
                           child: _currentConfig.logoUrl.isNotEmpty 
@@ -319,7 +340,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                         elevation: 0,
                         color: Theme.of(context).colorScheme.surfaceContainerHighest.withAlpha(100),
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(16),
+                          borderRadius: BorderRadius.circular(context.tokens.cornerRadius),
                           side: BorderSide(color: Theme.of(context).colorScheme.outlineVariant),
                         ),
                         child: Padding(

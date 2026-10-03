@@ -1,41 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../data/members_repository.dart';
-import '../domain/member.dart';
+import '../data/staff_repository.dart';
 
-class AddMemberDialog extends ConsumerStatefulWidget {
-  const AddMemberDialog({super.key, this.existingMember});
-  final Member? existingMember;
+class AddStaffDialog extends ConsumerStatefulWidget {
+  const AddStaffDialog({super.key});
 
   @override
-  ConsumerState<AddMemberDialog> createState() => _AddMemberDialogState();
+  ConsumerState<AddStaffDialog> createState() => _AddStaffDialogState();
 }
 
-class _AddMemberDialogState extends ConsumerState<AddMemberDialog> {
+class _AddStaffDialogState extends ConsumerState<AddStaffDialog> {
   final _formKey = GlobalKey<FormState>();
   
   final _nameController = TextEditingController();
-  final _phoneController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   
+  String _selectedRole = 'trainer';
   bool _isLoading = false;
   String? _error;
 
   @override
-  void initState() {
-    super.initState();
-    if (widget.existingMember != null) {
-      _nameController.text = widget.existingMember!.name;
-      _phoneController.text = widget.existingMember!.phone;
-    }
-  }
-
-  @override
   void dispose() {
     _nameController.dispose();
-    _phoneController.dispose();
     _emailController.dispose();
     _passwordController.dispose();
     super.dispose();
@@ -50,28 +38,19 @@ class _AddMemberDialogState extends ConsumerState<AddMemberDialog> {
     });
     
     try {
-      if (widget.existingMember != null) {
-        await ref.read(membersRepositoryProvider).updateMemberAdmin(
-          memberId: widget.existingMember!.id,
-          name: _nameController.text.trim(),
-          phone: _phoneController.text.trim(),
-        );
-      } else {
-        await ref.read(membersRepositoryProvider).createMember(
-          name: _nameController.text.trim(),
-          phone: _phoneController.text.trim(),
-          email: _emailController.text.trim(),
-          password: _passwordController.text,
-        );
-      }
+      await ref.read(staffRepositoryProvider).createStaff(
+        name: _nameController.text.trim(),
+        email: _emailController.text.trim(),
+        password: _passwordController.text,
+        role: _selectedRole,
+      );
       
-      // Refresh the members list
-      ref.invalidate(membersListProvider);
+      ref.invalidate(staffListProvider);
       
       if (mounted) {
         Navigator.of(context).pop();
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(widget.existingMember != null ? 'Member updated successfully!' : 'Member added successfully!')),
+          const SnackBar(content: Text('Staff account created successfully!')),
         );
       }
     } on Object catch (e) {
@@ -85,7 +64,7 @@ class _AddMemberDialogState extends ConsumerState<AddMemberDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text(widget.existingMember != null ? 'Edit Member' : 'Add New Member'),
+      title: const Text('Add Staff Account'),
       content: SizedBox(
         width: 400,
         child: SingleChildScrollView(
@@ -108,26 +87,33 @@ class _AddMemberDialogState extends ConsumerState<AddMemberDialog> {
                 ),
                 const SizedBox(height: 16),
                 TextFormField(
-                  controller: _phoneController,
-                  decoration: const InputDecoration(labelText: 'Phone Number', prefixIcon: Icon(Icons.phone)),
+                  controller: _emailController,
+                  decoration: const InputDecoration(labelText: 'Email Address', prefixIcon: Icon(Icons.email)),
                   validator: (v) => v == null || v.isEmpty ? 'Required' : null,
+                  keyboardType: TextInputType.emailAddress,
                 ),
                 const SizedBox(height: 16),
-                if (widget.existingMember == null) ...[
-                  TextFormField(
-                    controller: _emailController,
-                    decoration: const InputDecoration(labelText: 'Email Address', prefixIcon: Icon(Icons.email)),
-                    validator: (v) => v == null || v.isEmpty ? 'Required' : null,
-                    keyboardType: TextInputType.emailAddress,
-                  ),
-                  const SizedBox(height: 16),
-                  TextFormField(
-                    controller: _passwordController,
-                    decoration: const InputDecoration(labelText: 'Password', prefixIcon: Icon(Icons.lock)),
-                    obscureText: true,
-                    validator: (v) => v == null || v.length < 8 ? 'Min 8 characters' : null,
-                  ),
-                ],
+                TextFormField(
+                  controller: _passwordController,
+                  decoration: const InputDecoration(labelText: 'Temporary Password', prefixIcon: Icon(Icons.lock)),
+                  obscureText: true,
+                  validator: (v) => v == null || v.length < 8 ? 'Min 8 characters' : null,
+                ),
+                const SizedBox(height: 16),
+                DropdownButtonFormField<String>(
+                  initialValue: _selectedRole,
+                  decoration: const InputDecoration(labelText: 'Role', prefixIcon: Icon(Icons.badge)),
+                  items: const [
+                    DropdownMenuItem(value: 'trainer', child: Text('Trainer')),
+                    DropdownMenuItem(value: 'receptionist', child: Text('Receptionist')),
+                    DropdownMenuItem(value: 'manager', child: Text('Manager')),
+                  ],
+                  onChanged: (val) {
+                    if (val != null) {
+                      setState(() => _selectedRole = val);
+                    }
+                  },
+                ),
               ],
             ),
           ),
@@ -142,7 +128,7 @@ class _AddMemberDialogState extends ConsumerState<AddMemberDialog> {
           onPressed: _isLoading ? null : _submit,
           child: _isLoading 
               ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(strokeWidth: 2))
-              : Text(widget.existingMember != null ? 'Save Changes' : 'Save Member'),
+              : const Text('Create Account'),
         ),
       ],
     );

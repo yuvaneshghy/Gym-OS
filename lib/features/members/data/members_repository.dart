@@ -67,6 +67,26 @@ class MembersRepository {
     });
   }
 
+  Future<void> updateMemberAdmin({
+    required String memberId,
+    required String name,
+    required String phone,
+  }) async {
+    await _pb.collection('members').update(memberId, body: {
+      'name': name,
+      'phone': phone,
+    });
+  }
+
+  Future<void> deleteMemberAdmin(String memberId, String userId) async {
+    await _pb.collection('members').delete(memberId);
+    if (userId.isNotEmpty) {
+      try {
+        await _pb.collection('users').delete(userId);
+      } on Object catch (_) {}
+    }
+  }
+
   Future<Member?> getCurrentMember() async {
     final userId = _pb.authStore.record?.id;
     if (userId == null) return null;
