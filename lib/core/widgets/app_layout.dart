@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import '../../features/attendance/presentation/global_scanner_listener.dart';
 import '../../features/auth/data/auth_repository.dart';
 import '../config/tenant_config.dart';
 import '../config/tenant_config_repository.dart';
@@ -162,7 +163,9 @@ class AppLayout extends ConsumerWidget {
           Positioned.fill(
             child: Padding(
               padding: const EdgeInsets.only(top: 80, bottom: 80),
-              child: child,
+              child: role != 'member' 
+                  ? GlobalScannerListener(child: child)
+                  : child,
             ),
           ),
           // Top Dock

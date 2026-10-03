@@ -48,12 +48,44 @@ class AttendanceRepository {
   /// Throws an exception if their plan is expired/dues pending (if we enforce it here),
   /// or simply returns a status string that the UI handles.
   Future<String> checkInMember(String memberId, {required bool enforceActivePlan}) async {
-    // 1. Fetch memberships to verify active plan
+    final now = DateTime.now();
+    String pbDate(DateTime d) => d.toUtc().toIso8601String().replaceFirst('T', ' ');
+
+    // 1. Check for existing attendance today
+    final startOfDay = DateTime(now.year, now.month, now.day);
+    final startStr = pbDate(startOfDay);
+    
+    final recentRecords = await _pb.collection('attendance').getFullList(
+      filter: 'member="$memberId" && check_in_time >= "$startStr"',
+      sort: '-check_in_time',
+    );
+
+    if (recentRecords.isNotEmpty) {
+      final latest = recentRecords.first;
+      final checkOutTime = latest.getStringValue('check_out_time');
+      
+      if (checkOutTime.isEmpty) {
+        final checkInTime = DateTime.parse(latest.getStringValue('check_in_time')).toLocal();
+        final diff = now.difference(checkInTime);
+        
+        if (diff.inMinutes < 5) {
+          // Debounce: Scanned again within 5 minutes
+          return 'ALREADY_CHECKED_IN';
+        } else {
+          // Check-out: Scanned after 5 minutes
+          await _pb.collection('attendance').update(latest.id, body: {
+            'check_out_time': pbDate(now),
+          });
+          return 'CHECKED_OUT';
+        }
+      }
+    }
+
+    // 2. Fetch memberships to verify active plan (if this is a check-in)
     final membershipsRes = await _pb.collection('memberships').getFullList(
       filter: 'member="$memberId"',
     );
     
-    final now = DateTime.now();
     var hasActive = false;
     for (final m in membershipsRes) {
       final start = DateTime.parse(m.getStringValue('start_date')).toLocal();
@@ -68,8 +100,7 @@ class AttendanceRepository {
       return 'DENIED_EXPIRED';
     }
     
-    // Proceed to check in
-    String pbDate(DateTime d) => d.toUtc().toIso8601String().replaceFirst('T', ' ');
+    // 3. Proceed to check in
     await _pb.collection('attendance').create(body: {
       'member': memberId,
       'check_in_time': pbDate(now),

@@ -4,6 +4,11 @@ All notable changes to GymKit will be documented in this file.
 
 ## [Unreleased]
 ### Added
+- **Global Hardware Scanner (Phase 1.1)**: Implemented a global `HardwareKeyboard` listener at the `AppLayout` level. USB barcode scanners now automatically trigger check-ins from any admin/staff screen, eliminating the need to have the "Check-In" screen actively open.
+- **Member Dashboard Overhaul (Phase 1.1)**: `MemberHomeScreen` now displays the user's active plan, expiry progress bar, and recent payment history alongside their digital ID QR code.
+- **Checkout & Debounce Logic (Phase 1.1)**: `AttendanceRepository` now records `check_out_time` if a member scans their ID again after 5 minutes. It also ignores duplicate scans within a 5-minute window to prevent accidental double-logging.
+- **Combined Phase 1.5 Schema**: Created `1790940001_phase1_combined_schema.js` to initialize collections for workouts, exercises, metrics, and classes.
+- **Rich Seed Data**: Added `1790940002_rich_seed_data.js` migration to automatically populate the database with memberships, payments, attendance history, and sample fitness data.
 - **Staff Management (Phase 1.5)**: Implemented `StaffScreen` and `AddStaffDialog` within the Settings module. Owners can now create sub-accounts for trainers, receptionists, and managers with specific role-based permissions.
 - **Dashboard**: Created `DashboardScreen` displaying metrics like Total Members, Active Members, Present Today, and Monthly Revenue.
 - **Member CRM (Directory & Profile)**: Built `MembersDirectoryScreen` with real-time search/filter capabilities and an "Add Member" dialog. Built `MemberProfileScreen` enabling admins to edit member profiles, assign plans, and delete members.

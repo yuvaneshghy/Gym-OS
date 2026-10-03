@@ -13,6 +13,10 @@ final membersListProvider = FutureProvider.autoDispose<List<Member>>((ref) async
   return ref.watch(membersRepositoryProvider).getMembers();
 });
 
+final memberMembershipsProvider = FutureProvider.family.autoDispose<List<Membership>, String>((ref, memberId) async {
+  return ref.watch(membersRepositoryProvider).getMemberships(memberId);
+});
+
 class MembersRepository {
   MembersRepository(this._pb);
   final PocketBase _pb;
