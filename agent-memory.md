@@ -129,7 +129,7 @@ Theme inputs from config: seed color, font, corner radius, input style, density 
 | Phase | Scope |
 |-------|-------|
 | **v1 (sellable)** | Auth + roles, members, plans & memberships, payments, QR attendance, expiry reminders, owner dashboard, branding/theme settings |
-| **v1.5** | Classes & booking, workouts + trainer assignment, steps |
+| **v1.5** | Classes & booking, workouts + trainer assignment, steps, camera/webcam QR scanning |
 | **v2** | Diet, chat, leads, multi-branch, hardware access, store |
 
 Build v1 as thin vertical slices. Do not start v1.5 features until v1 is stable and has been demoed.

@@ -16,7 +16,7 @@ A fast, compact, white-label Gym management product (member app + owner dashboar
 - **White-label Config:** Configure app branding (colors, logos) and toggle feature flags dynamically.
 
 ### 🏋️ Customer / Member
-- **Digital Access:** Quick QR code generation for turnstile/desk check-in.
+- **Digital Access:** Quick QR code generation for turnstile/desk check-in, and Web/Mobile Camera scanning.
 - **Membership Management:** View plan details, renew via in-app payments, and receive expiry reminders.
 - **Fitness Tracking:** View assigned workout plans, log daily workouts, and track progress.
 - **Classes & Bookings:** View the gym timetable and book slots for group classes.

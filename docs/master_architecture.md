@@ -52,7 +52,7 @@ GymOS (GymKit) is a multi-tenant, cross-platform application designed to manage 
 4. **Member Profile (`/member/:id`)**: Detailed view of a single member. 
    - **Dialogs:** `AssignPlanDialog`, `RecordPaymentDialog`.
 5. **Plans (`/plans`)**: CRUD operations for Gym Memberships.
-6. **Kiosk / Check-in (`/kiosk`)**: Open-ended scanning page for hardware integration.
+6. **Kiosk / Check-in (`/kiosk`)**: Open-ended scanning page for hardware integration, and upcoming Webcam/Camera QR Scanning fallback.
 7. **Member Portal (`/member`)**: The mobile-first view for Customers. 
 8. **Settings (`/settings`)**: Theme editor, gym details, default currency, and staff management.
 
