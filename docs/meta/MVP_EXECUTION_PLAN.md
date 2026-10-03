@@ -22,7 +22,6 @@ This document breaks down the immediate next steps to complete **Phase 1: Core S
   - Create `MemberProfileScreen` (Detailed view showing their active plans, payment history, and attendance graph).
   - Add "New Member" modal/form (capturing face photo/avatar, contact info).
 
-### 3. Membership & Plans (In Progress)
 ### 3. Membership & Plans (Completed)
 **Objective**: Allow admins to create standard plans (e.g., "Monthly Cardio", "Annual Elite") and assign them to members.
 - **Tasks**:
@@ -30,13 +29,13 @@ This document breaks down the immediate next steps to complete **Phase 1: Core S
   - [x] UI flow to assign a plan to a member from their profile.
   - [x] Logic to calculate expiry dates and grace periods.
 
-### 4. Payments & Billing
+### 4. Payments & Billing (Completed)
 **Objective**: Record financial transactions securely.
 - **Tasks**:
-  - Implement payment modal when assigning a plan.
-  - Record full or partial payments.
-  - Display outstanding balances (Dues) on the member profile and dashboard.
-  - Generate basic digital receipt UI.
+  - [x] Implement payment modal when assigning a plan. (Added Record Payment Button to Profile)
+  - [x] Record full or partial payments.
+  - [x] Display outstanding balances (Dues) on the member profile and dashboard.
+  - [x] Generate basic digital receipt UI. (History list in Member Profile)
 
 ### 5. Active Mode & Check-In Kiosk
 **Objective**: The primary screen displayed at the front desk for member entry.

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../payments/data/payments_repository.dart';
+import '../../payments/presentation/record_payment_dialog.dart';
 import '../data/members_repository.dart';
 import '../domain/member.dart';
 import '../domain/membership.dart';
@@ -30,6 +32,7 @@ class MemberProfileScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final memberAsync = ref.watch(memberProfileProvider(memberId));
     final membershipsAsync = ref.watch(memberMembershipsProvider(memberId));
+    final paymentsAsync = ref.watch(memberPaymentsProvider(memberId));
 
     return Scaffold(
       appBar: AppBar(
@@ -128,6 +131,53 @@ class MemberProfileScreen extends ConsumerWidget {
                 error: (err, st) => SliverToBoxAdapter(child: Center(child: Text('Error: $err'))),
               ),
               
+              
+              const SliverToBoxAdapter(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+                  child: Text('Payment History', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                ),
+              ),
+
+              paymentsAsync.when(
+                data: (payments) {
+                  if (payments.isEmpty) {
+                    return const SliverToBoxAdapter(
+                      child: Padding(
+                        padding: EdgeInsets.all(24),
+                        child: Center(child: Text('No payments recorded.')),
+                      ),
+                    );
+                  }
+                  
+                  return SliverList(
+                    delegate: SliverChildBuilderDelegate(
+                      (context, index) {
+                        final p = payments[index];
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 4),
+                          child: Card(
+                            elevation: 0,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              side: BorderSide(color: Theme.of(context).colorScheme.outlineVariant),
+                            ),
+                            child: ListTile(
+                              leading: const Icon(Icons.receipt_long),
+                              title: Text('\$${p.amount.toStringAsFixed(2)} via ${p.method.toUpperCase()}'),
+                              subtitle: Text('${p.date.year}-${p.date.month.toString().padLeft(2, '0')}-${p.date.day.toString().padLeft(2, '0')}${p.notes?.isNotEmpty == true ? ' • ${p.notes}' : ''}'),
+                            ),
+                          ),
+                        );
+                      },
+                      childCount: payments.length,
+                    ),
+                  );
+                },
+                loading: () => const SliverToBoxAdapter(child: Center(child: CircularProgressIndicator())),
+                error: (err, st) => SliverToBoxAdapter(child: Center(child: Text('Error: $err'))),
+              ),
+
               const SliverToBoxAdapter(child: SizedBox(height: 80)),
             ],
           );
@@ -136,20 +186,43 @@ class MemberProfileScreen extends ConsumerWidget {
         error: (err, st) => Center(child: Text('Error: $err')),
       ),
       floatingActionButton: memberAsync.hasValue && memberAsync.value != null 
-        ? FloatingActionButton.extended(
-            onPressed: () {
-              showDialog<void>(
-                context: context,
-                builder: (_) => AssignPlanDialog(
-                  member: memberAsync.value!,
-                  onAssigned: () {
-                    ref.invalidate(memberMembershipsProvider(memberId));
-                  },
-                ),
-              );
-            },
-            icon: const Icon(Icons.add),
-            label: const Text('Assign Plan'),
+        ? Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              FloatingActionButton.small(
+                heroTag: 'record_payment',
+                onPressed: () {
+                  showDialog<void>(
+                    context: context,
+                    builder: (_) => RecordPaymentDialog(
+                      memberId: memberAsync.value!.id,
+                      onRecorded: () {
+                        ref.invalidate(memberPaymentsProvider(memberId));
+                      },
+                    ),
+                  );
+                },
+                child: const Icon(Icons.attach_money),
+              ),
+              const SizedBox(height: 8),
+              FloatingActionButton.extended(
+                heroTag: 'assign_plan',
+                onPressed: () {
+                  showDialog<void>(
+                    context: context,
+                    builder: (_) => AssignPlanDialog(
+                      member: memberAsync.value!,
+                      onAssigned: () {
+                        ref.invalidate(memberMembershipsProvider(memberId));
+                      },
+                    ),
+                  );
+                },
+                icon: const Icon(Icons.add),
+                label: const Text('Assign Plan'),
+              ),
+            ],
           )
         : null,
     );
