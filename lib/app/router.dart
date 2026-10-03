@@ -6,6 +6,7 @@ import '../features/auth/data/auth_repository.dart';
 import '../features/auth/presentation/login_screen.dart';
 import '../features/dashboard/presentation/dashboard_screen.dart';
 import '../features/members/presentation/member_home_screen.dart';
+import '../features/members/presentation/members_directory_screen.dart';
 import '../features/settings/presentation/settings_screen.dart';
 
 /// The global GoRouter configuration as a Riverpod provider.
@@ -66,6 +67,10 @@ final routerProvider = Provider<GoRouter>((ref) {
           GoRoute(
             path: '/settings',
             builder: (context, state) => const SettingsScreen(),
+          ),
+          GoRoute(
+            path: '/members',
+            builder: (context, state) => const MembersDirectoryScreen(),
           ),
           GoRoute(
             path: '/member',

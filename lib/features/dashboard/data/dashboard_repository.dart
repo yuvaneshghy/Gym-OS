@@ -19,7 +19,7 @@ class DashboardRepository {
   Future<DashboardStats> getStats() async {
     final now = DateTime.now();
     final startOfToday = DateTime(now.year, now.month, now.day);
-    final startOfMonth = DateTime(now.year, now.month, 1);
+    final startOfMonth = DateTime(now.year, now.month);
 
     String pbDate(DateTime d) => d.toUtc().toIso8601String().replaceFirst('T', ' ');
 

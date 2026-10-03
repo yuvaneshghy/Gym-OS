@@ -10,7 +10,7 @@ This document outlines the phased delivery plan for GymKit.
 - [x] Layout & Docks (macOS style dynamic docks)
 - [x] Settings → Branding with live preview (Local Theme Preferences)
 - [x] Admin Dashboard (Revenue, Members, Present Now metrics)
-- [ ] Member Management CRM (CRUD, profiles)
+- [x] Member Management CRM (CRUD, profiles)
 - [ ] Membership Plans & Assignment (Creation, expiry tracking)
 - [ ] Manual Payments & Receipts (Invoices, partial payments)
 - [ ] Active Mode / Attendance (QR & Manual check-in, Live Feed)

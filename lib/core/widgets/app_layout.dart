@@ -113,6 +113,15 @@ class AppLayout extends ConsumerWidget {
               isSelected: currentPath == '/dashboard',
               onTap: () => context.go('/dashboard'),
             ),
+          if (role != 'member') ...[
+            const SizedBox(width: 16),
+            _DockItem(
+              icon: Icons.people,
+              label: 'Members',
+              isSelected: currentPath == '/members',
+              onTap: () => context.go('/members'),
+            ),
+          ],
           if (role == 'owner') ...[
             const SizedBox(width: 16),
             _DockItem(
