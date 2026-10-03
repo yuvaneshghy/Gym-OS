@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../attendance/data/attendance_repository.dart';
 import '../data/dashboard_repository.dart';
 
 class DashboardScreen extends ConsumerWidget {
@@ -48,6 +49,61 @@ class DashboardScreen extends ConsumerWidget {
                       child: Center(child: CircularProgressIndicator()),
                     ),
                     error: (e, st) => Center(child: Text('Error loading stats: $e')),
+                  ),
+                  
+                  const SizedBox(height: 48),
+                  Text('Recent Activity', style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold)),
+                  const SizedBox(height: 16),
+                  
+                  Consumer(
+                    builder: (context, ref, child) {
+                      final attendanceAsync = ref.watch(todaysAttendanceProvider);
+                      return attendanceAsync.when(
+                        data: (records) {
+                          if (records.isEmpty) {
+                            return const Center(
+                              child: Padding(
+                                padding: EdgeInsets.all(32.0),
+                                child: Text('No activity today.'),
+                              ),
+                            );
+                          }
+                          // Show only latest 5
+                          final recent = records.take(5).toList();
+                          return ListView.separated(
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemCount: recent.length,
+                            separatorBuilder: (_, __) => const SizedBox(height: 8),
+                            itemBuilder: (context, index) {
+                              final r = recent[index];
+                              return ListTile(
+                                tileColor: Theme.of(context).colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                  side: BorderSide(color: Theme.of(context).colorScheme.outlineVariant),
+                                ),
+                                leading: CircleAvatar(
+                                  backgroundColor: Theme.of(context).colorScheme.primary.withValues(alpha: 0.1),
+                                  child: Icon(Icons.person, color: Theme.of(context).colorScheme.primary),
+                                ),
+                                title: Text(r.expandMember?.name ?? 'Unknown Member', style: const TextStyle(fontWeight: FontWeight.bold)),
+                                subtitle: const Text('Checked In'),
+                                trailing: Text(
+                                  '${r.checkInTime.hour.toString().padLeft(2, '0')}:${r.checkInTime.minute.toString().padLeft(2, '0')}',
+                                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                    color: Theme.of(context).colorScheme.outline,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              );
+                            },
+                          );
+                        },
+                        loading: () => const Center(child: CircularProgressIndicator()),
+                        error: (e, st) => Center(child: Text('Error: $e')),
+                      );
+                    },
                   ),
                 ],
               ),

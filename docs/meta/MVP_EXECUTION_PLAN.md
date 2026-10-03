@@ -37,14 +37,14 @@ This document breaks down the immediate next steps to complete **Phase 1: Core S
   - [x] Display outstanding balances (Dues) on the member profile and dashboard.
   - [x] Generate basic digital receipt UI. (History list in Member Profile)
 
-### 5. Active Mode & Check-In Kiosk
+### 5. Active Mode & Check-In Kiosk (Completed)
 **Objective**: The primary screen displayed at the front desk for member entry.
 - **Tasks**:
-  - Implement `ActiveModeScreen` (A locked down, full-screen UI).
-  - Add a manual search bar (fallback).
-  - Add QR code scanner integration.
-  - Display a large, clear "Access Granted / Access Denied (Dues Pending)" overlay animation when someone checks in.
-  - Append to a live attendance feed on the side of the screen.
+  - [x] Implement `ActiveModeScreen` (A locked down, full-screen UI).
+  - [x] Add a manual search bar (fallback).
+  - [x] Add QR code scanner integration.
+  - [x] Display a large, clear "Access Granted / Access Denied (Dues Pending)" overlay animation when someone checks in.
+  - [x] Append to a live attendance feed on the side of the screen.
 
 ---
 
