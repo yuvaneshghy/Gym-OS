@@ -6,6 +6,7 @@ import '../features/auth/data/auth_repository.dart';
 import '../features/auth/presentation/login_screen.dart';
 import '../features/dashboard/presentation/dashboard_screen.dart';
 import '../features/members/presentation/member_home_screen.dart';
+import '../features/members/presentation/member_profile_screen.dart';
 import '../features/members/presentation/members_directory_screen.dart';
 import '../features/plans/presentation/plans_screen.dart';
 import '../features/settings/presentation/settings_screen.dart';
@@ -72,6 +73,15 @@ final routerProvider = Provider<GoRouter>((ref) {
           GoRoute(
             path: '/members',
             builder: (context, state) => const MembersDirectoryScreen(),
+            routes: [
+              GoRoute(
+                path: ':id',
+                builder: (context, state) {
+                  final id = state.pathParameters['id']!;
+                  return MemberProfileScreen(memberId: id);
+                },
+              ),
+            ],
           ),
           GoRoute(
             path: '/plans',

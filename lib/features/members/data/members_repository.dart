@@ -3,6 +3,7 @@ import 'package:pocketbase/pocketbase.dart';
 
 import '../../../data/pocketbase_client.dart';
 import '../domain/member.dart';
+import '../domain/membership.dart';
 
 final membersRepositoryProvider = Provider<MembersRepository>((ref) {
   return MembersRepository(ref.watch(pocketBaseProvider));
@@ -75,5 +76,33 @@ class MembersRepository {
     } on Object catch (_) {
       return null;
     }
+  }
+
+  Future<List<Membership>> getMemberships(String memberId) async {
+    final res = await _pb.collection('memberships').getFullList(
+      filter: 'member="$memberId"',
+      sort: '-created',
+      expand: 'plan',
+    );
+    return res.map(Membership.fromRecord).toList();
+  }
+
+  Future<void> assignPlan({
+    required String memberId,
+    required String planId,
+    required int durationDays,
+  }) async {
+    final now = DateTime.now();
+    final endDate = now.add(Duration(days: durationDays));
+    
+    // PocketBase dates must be UTC string
+    String pbDate(DateTime d) => d.toUtc().toIso8601String().replaceFirst('T', ' ');
+
+    await _pb.collection('memberships').create(body: {
+      'member': memberId,
+      'plan': planId,
+      'start_date': pbDate(now),
+      'end_date': pbDate(endDate),
+    });
   }
 }

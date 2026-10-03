@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../data/members_repository.dart';
 import 'add_member_dialog.dart';
@@ -55,9 +56,7 @@ class MembersDirectoryScreen extends ConsumerWidget {
                             subtitle: Text(m.phone.isEmpty ? 'No Phone' : m.phone),
                             trailing: const Icon(Icons.chevron_right),
                             onTap: () {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(content: Text('Profile view coming soon!')),
-                              );
+                              context.go('/members/${m.id}');
                             },
                           );
                         },
