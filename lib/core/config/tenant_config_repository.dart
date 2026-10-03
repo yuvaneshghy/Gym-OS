@@ -1,5 +1,7 @@
 import 'dart:convert';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:http/http.dart' as http;
+import 'package:image_picker/image_picker.dart';
 import 'package:pocketbase/pocketbase.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -44,10 +46,41 @@ class TenantConfigRepository {
     return config ?? const TenantConfig();
   }
 
+  Future<void> updateConfig(TenantConfig newConfig) async {
+    final record = await _pb.collection('app_config').getFirstListItem('', query: {'sort': '-updated'});
+    await _pb.collection('app_config').update(record.id, body: newConfig.toJson());
+    await _fetchAndCache();
+  }
+
+  Future<void> uploadLogo(XFile file) async {
+    final record = await _pb.collection('app_config').getFirstListItem('', query: {'sort': '-updated'});
+    final bytes = await file.readAsBytes();
+    final multipartFile = http.MultipartFile.fromBytes(
+      'logo',
+      bytes,
+      filename: file.name,
+    );
+    await _pb.collection('app_config').update(
+      record.id,
+      files: [multipartFile],
+    );
+    await _fetchAndCache();
+  }
+
+  Future<void> cacheConfig(TenantConfig newConfig) async {
+    await _prefs.setString(_cacheKey, jsonEncode(newConfig.toJson()));
+  }
+
   Future<void> _fetchAndCache() async {
     try {
-      final record = await _pb.collection('app_config').getFirstListItem('');
+      final record = await _pb.collection('app_config').getFirstListItem('', query: {'sort': '-updated'});
       final data = record.data;
+      final logoFilename = record.getStringValue('logo');
+      if (logoFilename.isNotEmpty) {
+        data['logo_url'] = _pb.files.getUrl(record, logoFilename).toString();
+      } else {
+        data['logo_url'] = '';
+      }
       await _prefs.setString(_cacheKey, jsonEncode(data));
     } on Object catch (_) {
       // Silently ignore refresh errors

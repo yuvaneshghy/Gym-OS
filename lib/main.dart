@@ -3,7 +3,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'app/router.dart';
+import 'core/config/tenant_config.dart';
+import 'core/config/tenant_config_repository.dart';
 import 'core/theme/theme_builder.dart';
+import 'core/theme/theme_mode_provider.dart';
 import 'data/pocketbase_client.dart';
 
 void main() async {
@@ -27,23 +30,27 @@ class GymKitApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final router = ref.watch(routerProvider);
+    final configAsync = ref.watch(tenantConfigProvider);
+    final config = configAsync.value ?? const TenantConfig();
+    final themeMode = ref.watch(themeModeProvider);
 
     return MaterialApp.router(
-      title: 'GymKit',
+      title: config.gymName.isNotEmpty ? config.gymName : 'GymKit',
       debugShowCheckedModeBanner: false,
+      themeMode: themeMode,
       theme: buildGymKitTheme(
-        seedColor: Colors.blue,
-        cornerRadius: 12.0,
+        seedColor: config.seedColor,
+        cornerRadius: config.cornerRadius,
         brightness: Brightness.light,
-        font: '',
-        inputStyle: 'outlined',
+        font: config.fontFamily,
+        inputStyle: config.inputStyle,
       ),
       darkTheme: buildGymKitTheme(
-        seedColor: Colors.blue,
-        cornerRadius: 12.0,
+        seedColor: config.seedColor,
+        cornerRadius: config.cornerRadius,
         brightness: Brightness.dark,
-        font: '',
-        inputStyle: 'outlined',
+        font: config.fontFamily,
+        inputStyle: config.inputStyle,
       ),
       routerConfig: router,
     );

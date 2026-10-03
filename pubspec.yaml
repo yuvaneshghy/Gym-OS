@@ -11,6 +11,8 @@ dependencies:
     sdk: flutter
   flutter_riverpod: ^3.4.3
   go_router: ^18.0.2
+  http: ^1.6.0
+  image_picker: ^1.2.3
   pocketbase: ^0.25.2
   shared_preferences: ^2.5.5
 

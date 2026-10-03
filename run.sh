@@ -4,10 +4,23 @@ set -e
 # Default modes
 REBUILD=false
 HOT_RELOAD=false
+PURE_PB=false
 
 # Parse arguments
 for arg in "$@"; do
   case $arg in
+    -h|--help)
+      echo "GymKit Local Environment Runner"
+      echo ""
+      echo "Usage: ./run.sh [options]"
+      echo ""
+      echo "Options:"
+      echo "  -h, --help    Show this help message"
+      echo "  --web         Run Flutter with hot-reload and PocketBase in background"
+      echo "  --pb          Run pure PocketBase only (Press 'r' or 'R' to restart it interactively)"
+      echo "  --rebuild     Rebuild the Flutter static web bundle and serve with PocketBase"
+      exit 0
+      ;;
     --rebuild)
       REBUILD=true
       shift
@@ -16,8 +29,49 @@ for arg in "$@"; do
       HOT_RELOAD=true
       shift
       ;;
+    --pb)
+      PURE_PB=true
+      shift
+      ;;
   esac
 done
+
+if [ "$PURE_PB" = true ]; then
+  echo "🚀 Starting PocketBase (Pure Backend Mode)..."
+  
+  start_pb() {
+    cd pb
+    ./pocketbase serve &
+    PB_PID=$!
+    cd ..
+  }
+  
+  start_pb
+  trap 'echo -e "\n🛑 Stopping PocketBase..."; kill $PB_PID 2>/dev/null || true; exit' SIGINT SIGTERM EXIT
+  
+  echo ""
+  echo "✅ PocketBase is live at: http://127.0.0.1:8090"
+  echo "👉 Dashboard: http://127.0.0.1:8090/_/"
+  echo "------------------------------------------------"
+  echo "🔄 Press 'r' or 'R' to restart PocketBase."
+  echo "🛑 Press Ctrl+C or 'q' to stop the server."
+  echo "------------------------------------------------"
+  
+  while true; do
+    read -r -s -n 1 key
+    if [[ $key == "r" ]] || [[ $key == "R" ]]; then
+      echo -e "\n🔄 Restarting PocketBase..."
+      kill $PB_PID 2>/dev/null || true
+      wait $PB_PID 2>/dev/null || true
+      start_pb
+      echo "✅ PocketBase restarted!"
+    elif [[ $key == "q" ]] || [[ $key == "Q" ]]; then
+      echo -e "\n🛑 Quitting..."
+      kill $PB_PID 2>/dev/null || true
+      exit 0
+    fi
+  done
+fi
 
 echo "🚀 Starting GymKit local environment..."
 

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../core/config/tenant_config.dart';
+import '../../../core/config/tenant_config_repository.dart';
 import '../../../core/widgets/app_button.dart';
 import '../../../core/widgets/app_textfield.dart';
 import '../data/auth_repository.dart';
@@ -31,7 +33,11 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
           );
       // GoRouter redirect handles navigation on auth state change automatically.
     } on Object catch (e) {
-      setState(() => _error = e.toString());
+      if (e.toString().contains('400') || e.toString().contains('Failed to authenticate')) {
+        setState(() => _error = 'Invalid email or password.');
+      } else {
+        setState(() => _error = 'An error occurred. Please try again.');
+      }
     } finally {
       if (mounted) setState(() => _isLoading = false);
     }
@@ -50,6 +56,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     final size = MediaQuery.sizeOf(context);
     final isDesktop = size.width > 800;
 
+    final configAsync = ref.watch(tenantConfigProvider);
+    final config = configAsync.value ?? const TenantConfig();
+
     final loginForm = ConstrainedBox(
       constraints: const BoxConstraints(maxWidth: 400),
       child: Card(
@@ -61,11 +70,14 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               if (!isDesktop) ...[
-                Icon(Icons.fitness_center, size: 48, color: theme.colorScheme.primary),
+                if (config.logoUrl.isNotEmpty)
+                  Image.network(config.logoUrl, height: 64, fit: BoxFit.contain)
+                else
+                  Icon(Icons.fitness_center, size: 64, color: theme.colorScheme.primary),
                 const SizedBox(height: 16),
               ],
               Text(
-                'Welcome to GymKit',
+                config.gymName.isNotEmpty ? 'Welcome to ${config.gymName}' : 'Welcome to GymKit',
                 style: theme.textTheme.headlineSmall,
                 textAlign: TextAlign.center,
               ),
@@ -108,8 +120,11 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(Icons.fitness_center, size: 120, color: theme.colorScheme.primary),
-                    const SizedBox(height: 24),
+                    if (config.logoUrl.isNotEmpty)
+                      Image.network(config.logoUrl, height: 160, fit: BoxFit.contain)
+                    else
+                      Icon(Icons.fitness_center, size: 120, color: theme.colorScheme.primary),
+                    const SizedBox(height: 32),
                     Text(
                       'Manage your gym\nlike a pro.',
                       textAlign: TextAlign.center,

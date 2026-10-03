@@ -6,6 +6,11 @@ class TenantConfig {
     this.cornerRadius = 12.0,
     this.inputStyle = 'outlined',
     this.fontFamily = '',
+    this.gymName = '',
+    this.gymPhone = '',
+    this.gymEmail = '',
+    this.gymAddress = '',
+    this.logoUrl = '',
   });
 
   factory TenantConfig.fromJson(Map<String, dynamic> json) {
@@ -21,6 +26,35 @@ class TenantConfig {
       cornerRadius: (json['corner_radius'] as num?)?.toDouble() ?? 12.0,
       inputStyle: json['input_style'] as String? ?? 'outlined',
       fontFamily: json['font_family'] as String? ?? '',
+      gymName: json['gym_name'] as String? ?? '',
+      gymPhone: json['gym_phone'] as String? ?? '',
+      gymEmail: json['gym_email'] as String? ?? '',
+      gymAddress: json['gym_address'] as String? ?? '',
+      logoUrl: json['logo_url'] as String? ?? '',
+    );
+  }
+
+  TenantConfig copyWith({
+    Color? seedColor,
+    double? cornerRadius,
+    String? inputStyle,
+    String? fontFamily,
+    String? gymName,
+    String? gymPhone,
+    String? gymEmail,
+    String? gymAddress,
+    String? logoUrl,
+  }) {
+    return TenantConfig(
+      seedColor: seedColor ?? this.seedColor,
+      cornerRadius: cornerRadius ?? this.cornerRadius,
+      inputStyle: inputStyle ?? this.inputStyle,
+      fontFamily: fontFamily ?? this.fontFamily,
+      gymName: gymName ?? this.gymName,
+      gymPhone: gymPhone ?? this.gymPhone,
+      gymEmail: gymEmail ?? this.gymEmail,
+      gymAddress: gymAddress ?? this.gymAddress,
+      logoUrl: logoUrl ?? this.logoUrl,
     );
   }
 
@@ -28,11 +62,21 @@ class TenantConfig {
   final double cornerRadius;
   final String inputStyle;
   final String fontFamily;
+  final String gymName;
+  final String gymPhone;
+  final String gymEmail;
+  final String gymAddress;
+  final String logoUrl;
 
   Map<String, dynamic> toJson() => {
         'seed_color': '#${(seedColor.toARGB32() & 0xFFFFFF).toRadixString(16).padLeft(6, '0')}',
         'corner_radius': cornerRadius,
         'input_style': inputStyle,
         'font_family': fontFamily,
+        'gym_name': gymName,
+        'gym_phone': gymPhone,
+        'gym_email': gymEmail,
+        'gym_address': gymAddress,
+        'logo_url': logoUrl,
       };
 }
