@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../core/theme/app_tokens.dart';
 import '../data/workouts_repository.dart';
@@ -19,7 +20,7 @@ class WorkoutsScreen extends ConsumerWidget {
           IconButton(
             icon: const Icon(Icons.add),
             onPressed: () {
-              // TODO: Open Workout Builder
+              context.go('/workouts/builder');
             },
           ),
         ],

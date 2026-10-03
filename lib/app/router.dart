@@ -13,6 +13,7 @@ import '../features/members/presentation/members_directory_screen.dart';
 import '../features/plans/presentation/plans_screen.dart';
 import '../features/settings/presentation/settings_screen.dart';
 import '../features/staff/presentation/staff_screen.dart';
+import '../features/workouts/presentation/workout_builder_screen.dart';
 import '../features/workouts/presentation/workouts_screen.dart';
 
 /// The global GoRouter configuration as a Riverpod provider.
@@ -104,6 +105,12 @@ final routerProvider = Provider<GoRouter>((ref) {
           GoRoute(
             path: '/workouts',
             builder: (context, state) => const WorkoutsScreen(),
+            routes: [
+              GoRoute(
+                path: 'builder',
+                builder: (context, state) => const WorkoutBuilderScreen(),
+              ),
+            ],
           ),
           GoRoute(
             path: '/classes',
