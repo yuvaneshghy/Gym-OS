@@ -12,15 +12,6 @@ class Payment {
     required this.created,
   });
 
-  final String id;
-  final String memberId;
-  final String? membershipId;
-  final double amount;
-  final String method;
-  final DateTime date;
-  final String? notes;
-  final DateTime created;
-
   factory Payment.fromRecord(RecordModel record) {
     return Payment(
       id: record.id,
@@ -33,4 +24,13 @@ class Payment {
       created: DateTime.parse(record.getStringValue('created')).toLocal(),
     );
   }
+
+  final String id;
+  final String memberId;
+  final String? membershipId;
+  final double amount;
+  final String method;
+  final DateTime date;
+  final String? notes;
+  final DateTime created;
 }
