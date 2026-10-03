@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../core/widgets/app_layout.dart';
+import '../features/attendance/presentation/active_mode_screen.dart';
 import '../features/auth/data/auth_repository.dart';
 import '../features/auth/presentation/login_screen.dart';
 import '../features/dashboard/presentation/dashboard_screen.dart';
@@ -86,6 +87,10 @@ final routerProvider = Provider<GoRouter>((ref) {
           GoRoute(
             path: '/plans',
             builder: (context, state) => const PlansScreen(),
+          ),
+          GoRoute(
+            path: '/kiosk',
+            builder: (context, state) => const ActiveModeScreen(),
           ),
           GoRoute(
             path: '/member',
