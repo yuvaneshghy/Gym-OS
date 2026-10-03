@@ -74,7 +74,7 @@ class DashboardScreen extends ConsumerWidget {
                             shrinkWrap: true,
                             physics: const NeverScrollableScrollPhysics(),
                             itemCount: recent.length,
-                            separatorBuilder: (_, __) => const SizedBox(height: 8),
+                            separatorBuilder: (context, index) => const SizedBox(height: 8),
                             itemBuilder: (context, index) {
                               final r = recent[index];
                               return ListTile(

@@ -6,12 +6,12 @@ This document breaks down the immediate next steps to complete **Phase 1: Core S
 
 ## 📅 Upcoming Milestones
 
-### 1. Dashboard & Analytics Module (Next)
+### 1. Dashboard & Analytics Module (Completed)
 **Objective**: Build the Owner/Admin dashboard for a high-level overview of gym performance.
 - **Tasks**:
-  - Implement `DashboardScreen` UI (Grid of cards).
-  - Create PocketBase queries to fetch: Total Members, Active Members, Present Today, Revenue this month.
-  - Display recent activity feed (latest check-ins).
+  - [x] Implement `DashboardScreen` UI (Grid of cards).
+  - [x] Create PocketBase queries to fetch: Total Members, Active Members, Present Today, Revenue this month.
+  - [x] Display recent activity feed (latest check-ins).
 - **Target**: Make it look premium with dynamic gradients and micro-animations.
 
 ### 2. Member Management (CRM)
