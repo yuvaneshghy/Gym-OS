@@ -12,7 +12,7 @@ This document outlines the phased delivery plan for GymKit.
 - [x] Admin Dashboard (Revenue, Members, Present Now metrics)
 - [x] Member Management CRM (CRUD, profiles)
 - [x] Membership Plans & Assignment (Creation, expiry tracking)
-- [ ] Manual Payments & Receipts (Invoices, partial payments)
+- [x] Manual Payments & Receipts (Invoices, partial payments)
 - [ ] Active Mode / Attendance (QR & Manual check-in, Live Feed)
 - [ ] Local Offline-first SQLite Sync (Future optimization)
 
