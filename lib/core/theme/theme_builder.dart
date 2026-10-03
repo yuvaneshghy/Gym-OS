@@ -55,5 +55,10 @@ ThemeData buildGymKitTheme({
       border: inputBorder,
       filled: inputStyle == 'filled',
     ),
+    snackBarTheme: SnackBarThemeData(
+      behavior: SnackBarBehavior.floating,
+      shape: shape,
+      showCloseIcon: true,
+    ),
   );
 }
