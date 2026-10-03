@@ -80,9 +80,8 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
       _currentConfig = config;
       _hexController.text = '#${(config.seedColor.toARGB32() & 0xFFFFFF).toRadixString(16).padLeft(6, '0').toUpperCase()}';
     });
-    // Update local cache and refresh UI for instant preview
-    ref.read(tenantConfigRepositoryProvider).cacheConfig(config);
-    ref.invalidate(tenantConfigProvider);
+    // Update local cache and state for instant preview
+    ref.read(tenantConfigProvider.notifier).updateConfig(config);
   }
 
   Future<void> _saveConfig() async {
@@ -91,15 +90,14 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
     setState(() => _isLoading = true);
     
     try {
-      final repo = ref.read(tenantConfigRepositoryProvider);
+      final notifier = ref.read(tenantConfigProvider.notifier);
       final newConfig = _currentConfig.copyWith(
         gymName: _nameController.text,
         gymPhone: _phoneController.text,
         gymEmail: _emailController.text,
         gymAddress: _addressController.text,
       );
-      await repo.updateConfig(newConfig);
-      ref.invalidate(tenantConfigProvider);
+      await notifier.updateConfig(newConfig);
       
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -126,9 +124,8 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
     
     setState(() => _isLoading = true);
     try {
-      final repo = ref.read(tenantConfigRepositoryProvider);
-      await repo.uploadLogo(file);
-      ref.invalidate(tenantConfigProvider);
+      final notifier = ref.read(tenantConfigProvider.notifier);
+      await notifier.uploadLogo(file);
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Logo uploaded successfully')),

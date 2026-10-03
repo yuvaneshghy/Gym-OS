@@ -16,7 +16,17 @@ NC='\033[0m' # No Color
 
 # ==========================================
 # --sync flag: git-only mode (no CI/CD prompts)
+# -h flag: Show help
 # ==========================================
+if [[ "$1" == "-h" || "$1" == "--help" ]]; then
+    echo "Usage: ./git-sync.sh [options] [commit_message]"
+    echo ""
+    echo "Options:"
+    echo "  --sync    Only perform git add/commit/push (skip CI/CD prompts)"
+    echo "  -h        Show this help message"
+    exit 0
+fi
+
 SYNC_ONLY=false
 if [[ "$1" == "--sync" ]]; then
     SYNC_ONLY=true
