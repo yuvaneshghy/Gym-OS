@@ -13,6 +13,7 @@ This document outlines the phased delivery plan for GymKit.
 - [x] Member Management CRM (CRUD, profiles)
 - [x] Membership Plans & Assignment (Creation, expiry tracking)
 - [x] Manual Payments & Receipts (Invoices, partial payments)
+- [ ] GST Invoicing & Compliance
 - [x] Active Mode / Attendance (QR & Manual check-in, Live Feed)
 - [ ] Local Offline-first SQLite Sync (Future optimization)
 
@@ -21,11 +22,14 @@ This document outlines the phased delivery plan for GymKit.
 - [ ] Workout Plans (Sets, reps, weights assigned by trainers)
 - [ ] Progress Tracking (Measurements, photos)
 - [ ] Group Classes & Slot Bookings
-- [ ] Automated Expiry/Dues Reminders (pb_hooks)
+- [ ] WhatsApp Automation (Expiry alerts, payment reminders)
+- [ ] Optional Cloud Backup & Sync Engine
+- [ ] Audit Logs for Staff Actions
 
 ## 🔴 Phase 2: Enterprise & Hardware
 - [ ] In-app Chat (Trainers <-> Members)
 - [ ] Payment Gateway Integration (Stripe / Razorpay)
 - [ ] Hardware Turnstile/RFID Integration
+- [ ] Software Face Recognition (Tier 1 Biometric Check-in)
 - [ ] Push Notifications (FCM)
 

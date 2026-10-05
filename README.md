@@ -9,14 +9,15 @@ A fast, compact, white-label Gym management product (member app + owner dashboar
 ## 📱 Features
 
 ### 🏢 Owner / Admin
-- **Financial Dashboard:** Real-time revenue tracking, pending dues, and payment history.
+- **Financial Dashboard:** Real-time revenue tracking, pending dues, GST Invoicing, and payment history.
 - **Member Management:** View all members, membership status, attendance, and contact info.
 - **Plan Control:** Create, edit, and disable membership plans, trial passes, and drop-in rates.
-- **Access Control:** Assign roles (Manager, Receptionist, Trainer) and manage permissions.
+- **Access Control:** Assign roles (Manager, Receptionist, Trainer), manage permissions, and Audit Logs.
+- **Value-Added Services:** Optional WhatsApp automation for payment reminders and expiry alerts.
 - **White-label Config:** Configure app branding (colors, logos) and toggle feature flags dynamically.
 
 ### 🏋️ Customer / Member
-- **Digital Access:** Quick QR code generation for turnstile/desk check-in, and Web/Mobile Camera scanning.
+- **Digital Access:** Quick QR code generation, Web/Mobile Camera scanning, and planned Face Recognition biometric entry.
 - **Membership Management:** View plan details, renew via in-app payments, and receive expiry reminders.
 - **Fitness Tracking:** View assigned workout plans, log daily workouts, and track progress.
 - **Classes & Bookings:** View the gym timetable and book slots for group classes.

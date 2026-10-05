@@ -37,10 +37,13 @@
 
 ## 💼 Business Model (drives architecture)
 
-1. **Template sale (one-time):** client gets a branded build + their own PocketBase instance they could take over. Needs clean tenant isolation and a handover/export path.
-2. **Managed service (monthly):** we host, update, back up, support. Needs fleet tooling: provision, update, backup, monitoring.
+1. **Hybrid Revenue Model:** 
+   - **Template sale (one-time license):** Client gets a branded build + their own PocketBase instance.
+   - **Optional AMC (Annual Maintenance):** For updates and remote support.
+   - **Value-Added Services (VAS - Monthly):** WhatsApp automation, Cloud backup, multi-branch sync.
+2. **Managed service (monthly):** We host, update, back up, support. Needs fleet tooling: provision, update, backup, monitoring.
 3. **Everything client-specific is configuration, not code.** No per-client forks.
-4. **Sell tiers via feature flags** (Basic / Pro) from the same codebase.
+4. **Sell tiers via feature flags** (Starter / Professional / Enterprise) from the same codebase.
 
 ---
 
@@ -129,8 +132,8 @@ Theme inputs from config: seed color, font, corner radius, input style, density 
 | Phase | Scope |
 |-------|-------|
 | **v1 (sellable)** | Auth + roles, members, plans & memberships, payments, QR attendance, expiry reminders, owner dashboard, branding/theme settings |
-| **v1.5** | Classes & booking, workouts + trainer assignment, steps, camera/webcam QR scanning |
-| **v2** | Diet, chat, leads, multi-branch, hardware access, store |
+| **v1.5** | Classes & booking, workouts + trainer assignment, steps, camera/webcam QR scanning, WhatsApp Automation, GST Invoicing |
+| **v2** | Diet, chat, leads, multi-branch, hardware access, Face Recognition check-in, store |
 
 Build v1 as thin vertical slices. Do not start v1.5 features until v1 is stable and has been demoed.
 
