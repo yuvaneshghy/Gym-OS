@@ -29,6 +29,8 @@ class PaymentsRepository {
     required String memberId,
     String? membershipId,
     required double amount,
+    double? gstAmount,
+    double? taxRate,
     required String method,
     String? notes,
   }) async {
@@ -40,6 +42,8 @@ class PaymentsRepository {
       'member': memberId,
       if (membershipId != null && membershipId.isNotEmpty) 'membership': membershipId,
       'amount': amount,
+      'gst_amount': ?gstAmount,
+      'tax_rate': ?taxRate,
       'method': method,
       'notes': notes ?? '',
       'date': pbDate(now),

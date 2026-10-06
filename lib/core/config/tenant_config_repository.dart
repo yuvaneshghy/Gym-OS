@@ -113,6 +113,11 @@ class TenantConfigNotifier extends AsyncNotifier<TenantConfig> {
     }
   }
   
+  void setLocalConfig(TenantConfig newConfig) {
+    state = AsyncData(newConfig);
+    ref.read(tenantConfigRepositoryProvider).cacheConfig(newConfig);
+  }
+  
   Future<void> uploadLogo(XFile file) async {
     final repo = ref.read(tenantConfigRepositoryProvider);
     await repo.uploadLogo(file);

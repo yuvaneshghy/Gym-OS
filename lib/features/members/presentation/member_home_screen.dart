@@ -7,6 +7,8 @@ import '../../../core/config/tenant_config_repository.dart';
 import '../../../core/theme/app_tokens.dart';
 import '../../auth/data/auth_repository.dart';
 import '../../payments/data/payments_repository.dart';
+import '../../workouts/data/workouts_repository.dart';
+import '../../workouts/presentation/active_workout_screen.dart';
 import '../data/members_repository.dart';
 import '../domain/member.dart';
 
@@ -54,8 +56,9 @@ class MemberHomeScreen extends ConsumerWidget {
               padding: const EdgeInsets.all(24),
               children: [
                 _buildDigitalIdCard(context, member, theme, tokens),
-                const SizedBox(height: 32),
                 _buildPlanSection(context, ref, member.id, theme, tokens),
+                const SizedBox(height: 32),
+                _buildTodaysWorkoutSection(context, ref, member.id, theme, tokens),
                 const SizedBox(height: 32),
                 _buildPaymentsSection(context, ref, member.id, theme, tokens, currency),
               ],
@@ -250,6 +253,101 @@ class MemberHomeScreen extends ConsumerWidget {
                     trailing: Text(p.method.toUpperCase(), style: theme.textTheme.labelSmall),
                   );
                 },
+              ),
+            );
+          },
+          loading: () => const CircularProgressIndicator(),
+          error: (e, st) => Text('Error: $e'),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildTodaysWorkoutSection(BuildContext context, WidgetRef ref, String memberId, ThemeData theme, AppTokens tokens) {
+    final workoutsAsync = ref.watch(memberWorkoutsProvider(memberId));
+    final now = DateTime.now();
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Today\'s Workout',
+          style: theme.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+        ),
+        const SizedBox(height: 16),
+        workoutsAsync.when(
+          data: (workouts) {
+            final todaysWorkouts = workouts.where((w) {
+              return w.date.year == now.year && w.date.month == now.month && w.date.day == now.day;
+            }).toList();
+
+            if (todaysWorkouts.isEmpty) {
+              return _buildEmptyCard(theme, tokens, 'Rest Day! No workout assigned.', Icons.hotel_class);
+            }
+
+            final workout = todaysWorkouts.first;
+            final isCompleted = workout.status == 'completed';
+
+            return Card(
+              elevation: 0,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(tokens.cornerRadius),
+                side: BorderSide(
+                  color: isCompleted ? tokens.successColor : theme.colorScheme.primary,
+                  width: 2,
+                ),
+              ),
+              color: isCompleted 
+                ? tokens.successColor.withAlpha(20) 
+                : theme.colorScheme.primaryContainer,
+              child: Padding(
+                padding: const EdgeInsets.all(24),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          workout.template?.name ?? 'Custom Workout',
+                          style: theme.textTheme.titleMedium?.copyWith(
+                            fontWeight: FontWeight.bold,
+                            color: isCompleted ? tokens.successColor : theme.colorScheme.onPrimaryContainer,
+                          ),
+                        ),
+                        if (isCompleted)
+                          Icon(Icons.check_circle, color: tokens.successColor)
+                      ],
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      isCompleted ? 'You crushed it today! 💪' : 'Ready to crush it?',
+                      style: theme.textTheme.bodyMedium?.copyWith(
+                        color: isCompleted ? tokens.successColor : theme.colorScheme.onPrimaryContainer,
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    SizedBox(
+                      width: double.infinity,
+                      child: FilledButton.icon(
+                        style: FilledButton.styleFrom(
+                          backgroundColor: isCompleted ? tokens.successColor : theme.colorScheme.primary,
+                          foregroundColor: isCompleted ? Colors.white : theme.colorScheme.onPrimary,
+                        ),
+                        onPressed: () {
+                          Navigator.push<void>(
+                            context,
+                            MaterialPageRoute<void>(
+                              builder: (ctx) => ActiveWorkoutScreen(workout: workout),
+                            ),
+                          ).then((_) => ref.invalidate(memberWorkoutsProvider(memberId)));
+                        },
+                        icon: Icon(isCompleted ? Icons.visibility : Icons.play_arrow),
+                        label: Text(isCompleted ? 'View Log' : 'Start Workout'),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             );
           },

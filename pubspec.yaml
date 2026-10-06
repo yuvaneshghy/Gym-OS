@@ -14,7 +14,9 @@ dependencies:
   http: ^1.6.0
   image_picker: ^1.2.3
   intl: ^0.20.3
+  pdf: ^3.13.1
   pocketbase: ^0.25.2
+  printing: ^5.15.1
   qr_flutter: ^4.1.0
   shared_preferences: ^2.5.5
 

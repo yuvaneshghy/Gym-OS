@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../core/theme/app_tokens.dart';
 import '../data/workouts_repository.dart';
+import 'assign_workout_dialog.dart';
 
 class WorkoutsScreen extends ConsumerWidget {
   const WorkoutsScreen({super.key});
@@ -51,7 +52,22 @@ class WorkoutsScreen extends ConsumerWidget {
                 child: ListTile(
                   title: Text(template.name, style: const TextStyle(fontWeight: FontWeight.bold)),
                   subtitle: Text('${template.routineData.length} exercises'),
-                  trailing: const Icon(Icons.chevron_right),
+                  trailing: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      IconButton(
+                        icon: const Icon(Icons.person_add),
+                        tooltip: 'Assign to Member',
+                        onPressed: () {
+                          showDialog<void>(
+                            context: context,
+                            builder: (_) => AssignWorkoutDialog(template: template),
+                          );
+                        },
+                      ),
+                      const Icon(Icons.chevron_right),
+                    ],
+                  ),
                   onTap: () {
                     // TODO: View/Edit template
                   },

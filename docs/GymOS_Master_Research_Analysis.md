@@ -73,12 +73,12 @@
 │  Members:  12.3M ───────────► 23.2M                     │
 │  Penetration: 0.8% ────────► 1.7%                       │
 │                                                         │
-│  ┌─────────────────────────────────┐                    │
-│  │ SEGMENT BREAKDOWN               │                    │
-│  │ Value Gyms:     78% of market   │ ◄── YOUR TARGET    │
-│  │ Boutique:       ~8% (fastest)   │                    │
-│  │ Premium/Luxury: ~14%            │                    │
-│  └─────────────────────────────────┘                    │
+│  ┌───────────────────────────────────┐                  │
+│  │ SEGMENT BREAKDOWN                 │                  │
+│  │ Value Gyms:     78% of market     │ ◄── YOUR TARGET  │
+│  │ Boutique:       ~8% (fastest)     │                  │
+│  │ Premium/Luxury: ~14%              │                  │
+│  └───────────────────────────────────┘                  │
 │                                                         │
 │  Top 10 cities = 56% of revenue                         │
 │  Tier 2/3 = MASSIVE untapped opportunity                │

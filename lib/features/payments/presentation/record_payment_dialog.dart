@@ -25,6 +25,7 @@ class RecordPaymentDialog extends ConsumerStatefulWidget {
 class _RecordPaymentDialogState extends ConsumerState<RecordPaymentDialog> {
   final _formKey = GlobalKey<FormState>();
   late TextEditingController _amountController;
+  late TextEditingController _taxRateController;
   final _notesController = TextEditingController();
   String _method = 'upi';
   bool _isLoading = false;
@@ -36,11 +37,13 @@ class _RecordPaymentDialogState extends ConsumerState<RecordPaymentDialog> {
     _amountController = TextEditingController(
       text: widget.defaultAmount?.toStringAsFixed(2) ?? '',
     );
+    _taxRateController = TextEditingController(text: '18'); // Default 18% GST
   }
 
   @override
   void dispose() {
     _amountController.dispose();
+    _taxRateController.dispose();
     _notesController.dispose();
     super.dispose();
   }
@@ -54,10 +57,16 @@ class _RecordPaymentDialogState extends ConsumerState<RecordPaymentDialog> {
     });
 
     try {
+      final amount = double.parse(_amountController.text);
+      final taxRate = double.tryParse(_taxRateController.text) ?? 0.0;
+      final gstAmount = amount * (taxRate / 100);
+
       await ref.read(paymentsRepositoryProvider).recordPayment(
         memberId: widget.memberId,
         membershipId: widget.membershipId,
-        amount: double.parse(_amountController.text),
+        amount: amount,
+        gstAmount: gstAmount,
+        taxRate: taxRate,
         method: _method,
         notes: _notesController.text,
       );
@@ -105,6 +114,12 @@ class _RecordPaymentDialogState extends ConsumerState<RecordPaymentDialog> {
                   decoration: InputDecoration(labelText: 'Amount', prefixText: currency),
                   keyboardType: const TextInputType.numberWithOptions(decimal: true),
                   validator: (v) => v == null || v.isEmpty ? 'Required' : null,
+                ),
+                const SizedBox(height: 16),
+                TextFormField(
+                  controller: _taxRateController,
+                  decoration: const InputDecoration(labelText: 'GST/Tax Rate (%)', suffixText: '%'),
+                  keyboardType: const TextInputType.numberWithOptions(decimal: true),
                 ),
                 const SizedBox(height: 16),
                 DropdownMenu<String>(

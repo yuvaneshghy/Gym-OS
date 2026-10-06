@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:printing/printing.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 import '../../../core/config/tenant_config_repository.dart';
 import '../../../core/theme/app_tokens.dart';
 
 import '../../payments/data/payments_repository.dart';
+import '../../payments/presentation/invoice_pdf_generator.dart';
 import '../../payments/presentation/record_payment_dialog.dart';
 import '../data/members_repository.dart';
 import '../domain/member.dart';
@@ -231,6 +233,25 @@ class MemberProfileScreen extends ConsumerWidget {
                               leading: const Icon(Icons.receipt_long),
                               title: Text('$currency${p.amount.toStringAsFixed(2)} via ${p.method.toUpperCase()}'),
                               subtitle: Text('${p.date.year}-${p.date.month.toString().padLeft(2, '0')}-${p.date.day.toString().padLeft(2, '0')}${p.notes?.isNotEmpty == true ? ' • ${p.notes}' : ''}'),
+                              trailing: IconButton(
+                                icon: const Icon(Icons.print),
+                                tooltip: 'Print / Download Invoice',
+                                onPressed: () async {
+                                  final config = ref.read(tenantConfigProvider).value;
+                                  if (config == null || memberAsync.value == null) return;
+                                  
+                                  final pdfBytes = await InvoicePdfGenerator.generate(
+                                    config: config,
+                                    member: memberAsync.value!,
+                                    payment: p,
+                                  );
+                                  
+                                  await Printing.layoutPdf(
+                                    onLayout: (format) async => pdfBytes,
+                                    name: 'Invoice_${p.id}.pdf',
+                                  );
+                                },
+                              ),
                             ),
                           ),
                         );
