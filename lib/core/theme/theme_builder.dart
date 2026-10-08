@@ -30,9 +30,16 @@ ThemeData buildGymKitTheme({
     colorSchemeSeed: seedColor,
     brightness: brightness,
     useMaterial3: true,
+    scaffoldBackgroundColor: brightness == Brightness.light ? const Color(0xFFF4F7FA) : null,
     fontFamily: font.isEmpty ? null : font,
     extensions: [tokens],
-    cardTheme: CardThemeData(shape: shape),
+    cardTheme: CardThemeData(
+      shape: shape,
+      color: brightness == Brightness.light ? Colors.white : null,
+      elevation: 2,
+      shadowColor: Colors.black.withOpacity(0.1),
+      margin: EdgeInsets.zero,
+    ),
     dialogTheme: DialogThemeData(shape: shape),
     bottomSheetTheme: BottomSheetThemeData(
       shape: RoundedRectangleBorder(

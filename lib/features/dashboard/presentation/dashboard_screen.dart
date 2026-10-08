@@ -137,45 +137,43 @@ class _StatCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final baseColor = color ?? Theme.of(context).colorScheme.primary;
     
-    return Container(
-      decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
-        borderRadius: BorderRadius.circular(context.tokens.cornerRadius),
-        border: Border.all(color: Theme.of(context).colorScheme.outlineVariant),
-      ),
-      padding: const EdgeInsets.all(20),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Row(
-            children: [
-              Container(
-                padding: const EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                  color: baseColor.withValues(alpha: 0.1),
-                  borderRadius: BorderRadius.circular(context.tokens.cornerRadius),
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Row(
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: baseColor.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(context.tokens.cornerRadius),
+                  ),
+                  child: Icon(icon, color: baseColor),
                 ),
-                child: Icon(icon, color: baseColor),
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Text(title, 
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    color: Theme.of(context).colorScheme.onSurfaceVariant
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Text(title, 
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                 ),
-              ),
-            ],
-          ),
-          const Spacer(),
-          Text(value, 
-            style: Theme.of(context).textTheme.headlineLarge?.copyWith(
-              fontWeight: FontWeight.bold, 
-              color: Theme.of(context).colorScheme.onSurface
+              ],
             ),
-          ),
-        ],
+            const Spacer(),
+            Text(value, 
+              style: Theme.of(context).textTheme.headlineLarge?.copyWith(
+                fontWeight: FontWeight.bold, 
+                color: Theme.of(context).colorScheme.onSurface
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
